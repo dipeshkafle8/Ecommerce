@@ -13,7 +13,7 @@ productRouter.get("/getProducts", getProducts);
 productRouter.post("/addProduct", isAdmin, addProducts);
 productRouter.get("/getParticularProduct/:slug", getParticularProducts);
 productRouter.delete("/deleteProduct/:id", isAdmin, deleteParticularProduct);
-productRouter.get('/getProduct/pageCount/:pageNo',applyPagination)
+productRouter.get("/getProduct/pageCount/:pageNo", applyPagination);
 module.exports = {
   productRouter,
 };
