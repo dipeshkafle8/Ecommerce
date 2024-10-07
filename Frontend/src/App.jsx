@@ -1,6 +1,7 @@
 import "./App.css";
 import UserContext from "./UserContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import fetchDataFromAPI from "./Products/fetchDataFromAPI";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 import FrontPage from "./FrontPage/FrontPage";
@@ -11,10 +12,20 @@ import Admin from "./Admin/Admin";
 
 function App() {
   const userDetails = useState({ isLogged: false });
+  const [allCategory, setAllCategory] = useState(null);
+  useEffect(() => {
+    let requestBackEnd = async () => {
+      let result = await fetchDataFromAPI(
+        "http://localhost:3000/api/v1/category/getCategory"
+      );
+      setAllCategory(result.category);
+    };
+    requestBackEnd();
+  }, []);
   return (
     <>
       <BrowserRouter>
-        <UserContext.Provider value={userDetails}>
+        <UserContext.Provider value={{ userDetails, allCategory }}>
           <Navbar />
           <Routes>
             <Route path="/" element={<FrontPage />} />

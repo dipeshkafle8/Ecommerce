@@ -1,6 +1,10 @@
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, User, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
 function SignUp() {
+  const [showPassword, setShowPassword] = useState(false);
+
   function sendUserDetailsToBackEnd(user) {
     console.log(user);
   }
@@ -16,54 +20,104 @@ function SignUp() {
     };
     sendUserDetailsToBackEnd(obj);
   }
-  return (
-    <>
-      <div className="min-h-screen flex  flex-col justify-center items-center">
-        <div className="border-2 border-red-500 flex flex-col gap-y-4">
-          <div className="text-center pl-8 pr-8 pt-4">
-            <h1 className="text-3xl font-bold">Create your Account</h1>
-          </div>
-          <form onSubmit={handleFormData}>
-            <div className="flex flex-col p-8">
-              <label htmlFor="username">Username:</label>
-              <div className="flex gap-x-4">
-                <User />
-                <input type="text" id="username" name="username" required />
-              </div>
-              <label htmlFor="Email">Email:</label>
-              <div className="flex gap-x-4">
-                <input type="email" id="Email" name="email" required />
-              </div>
-              <label htmlFor="phone">Phone no:</label>
-              <div className="flex gap-x-4">
-                <input type="number" id="phone" name="phone" required />
-              </div>
-              <label htmlFor="password">Password:</label>
-              <div className="flex gap-x-4">
-                <Lock />
-                <input type="password" id="password" name="password" required />
-              </div>
-            </div>
 
-            <div className="text-center">
+  return (
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 mt-8">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-lg">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold">Create your Account</h1>
+        </div>
+        <form onSubmit={handleFormData}>
+          <div className="mb-4">
+            <label
+              htmlFor="username"
+              className="block text-lg font-medium mb-2"
+            >
+              Username
+            </label>
+            <div className="flex items-center border border-gray-300 p-2 rounded">
+              <User className="mr-2" />
+              <input
+                type="text"
+                id="username"
+                name="username"
+                className="w-full outline-none"
+                required
+              />
+            </div>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-lg font-medium mb-2">
+              Email
+            </label>
+            <div className="flex items-center border border-gray-300 p-2 rounded">
+              <Mail className="mr-2" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="w-full outline-none"
+                required
+              />
+            </div>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="phone" className="block text-lg font-medium mb-2">
+              Phone
+            </label>
+            <div className="flex items-center border border-gray-300 p-2 rounded">
+              <Phone className="mr-2" />
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                className="w-full outline-none"
+                required
+              />
+            </div>
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-lg font-medium mb-2"
+            >
+              Password
+            </label>
+            <div className="flex items-center border border-gray-300 p-2 rounded">
+              <Lock className="mr-2" />
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                className="w-full outline-none"
+                required
+              />
               <button
-                type="submit"
-                className="w-60 py-4 bg-black text-white rounded-sm"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="focus:outline-none"
               >
-                Create Account
+                {showPassword ? <EyeOff /> : <Eye />}
               </button>
             </div>
-          </form>
-          <span className="text-center">Already have an Account?</span>
-          <div className="text-center px-8 py-4 rounded-lg bg-black text-white">
-            <Link to="/login">Sign In</Link>
           </div>
-        </div>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            >
+              Sign Up
+            </button>
+          </div>
+          <div className="mt-4 text-center">
+            <Link to="/login" className="text-blue-500 hover:underline">
+              Already have an account? Login
+            </Link>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 }
-export default SignUp;
 
-//
-//
+export default SignUp;

@@ -1,4 +1,5 @@
 import backImg from "./images/background.jpg";
+import DisplayFamousProduct from "./DisplayFamousProduct";
 function FrontPage() {
   return (
     <>
@@ -19,6 +20,7 @@ function FrontPage() {
             </button>
           </div>
         </div>
+        <DisplayFamousProduct />
       </main>
     </>
   );

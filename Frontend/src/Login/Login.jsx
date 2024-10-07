@@ -1,9 +1,13 @@
 import { Eye, EyeOff, Lock, User } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserContext from "../UserContext";
 import { Link } from "react-router-dom";
+
 function Login() {
-  const [user, setUser] = useContext(UserContext);
+  const { userDetails } = useContext(UserContext);
+  const [user, setUser] = userDetails;
+  console.log(user.isLogged);
+  const [showPassword, setShowPassword] = useState(false);
 
   function sendUserDetailsToBackEnd(user) {
     console.log(user);
@@ -20,42 +24,70 @@ function Login() {
   }
 
   return (
-    <>
-      <div className="min-h-screen flex  flex-col justify-center items-center">
-        <div className="border-2 border-red-500 flex flex-col gap-y-4">
-          <div className="text-center pl-8 pr-8 pt-4">
-            <h1 className="text-3xl font-bold">Sign in to your Account</h1>
-          </div>
-          <form onSubmit={handleFormData}>
-            <div className="flex flex-col p-8">
-              <label htmlFor="username">Username:</label>
-              <div className="flex gap-x-4">
-                <User />
-                <input type="text" id="username" name="username" required />
-              </div>
-
-              <label htmlFor="password">Password:</label>
-              <div className="flex gap-x-4">
-                <Lock />
-                <input type="password" id="password" name="password" required />
-              </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <form onSubmit={handleFormData}>
+          <div className="mb-4">
+            <label
+              htmlFor="username"
+              className="block text-lg font-medium mb-2"
+            >
+              Username
+            </label>
+            <div className="flex items-center border border-gray-300 p-2 rounded">
+              <User className="mr-2" />
+              <input
+                type="text"
+                id="username"
+                name="username"
+                className="w-full outline-none"
+                required
+              />
             </div>
-            <div className="text-center">
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-lg font-medium mb-2"
+            >
+              Password
+            </label>
+            <div className="flex items-center border border-gray-300 p-2 rounded">
+              <Lock className="mr-2" />
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                className="w-full outline-none"
+                required
+              />
               <button
-                type="submit"
-                className="w-60 py-4 bg-black text-white rounded-sm"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="focus:outline-none"
               >
-                Log In
+                {showPassword ? <EyeOff /> : <Eye />}
               </button>
             </div>
-            <span className="text-center">New to our store?</span>
-            <div className="text-center px-8 py-4 rounded-lg bg-black text-white">
-              <Link to="/register">Create New Account</Link>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            >
+              Login
+            </button>
+          </div>
+          <div className="mt-4 text-center">
+            <Link to="/register" className="text-blue-500 hover:underline">
+              Don't have an account? Register
+            </Link>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 }
+
 export default Login;

@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import Profile from "./Profile";
 function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
