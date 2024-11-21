@@ -146,10 +146,30 @@ const applyPagination = async (req, res) => {
   }
 };
 
+//to get famous product which has higher order count
+const getFamousProduct = async (req, res) => {
+  try {
+    const famousProducts = await ProductModel.find({})
+      .sort({ orderCount: -1 }) //to get orders in descending order
+      .limit(10); //to limit for top 10 products
+
+    res.status(200).json({
+      products: famousProducts,
+      status: 1,
+      msg: "Successfully fetched",
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: 0, msg: "Failed to fetch famous products" });
+  }
+};
+
 module.exports = {
   addProducts,
   getParticularProducts,
   getProducts,
   deleteParticularProduct,
   applyPagination,
+  getFamousProduct,
 };

@@ -18,21 +18,45 @@ function Navbar() {
         <div className=" flex  w-[11rem] md:w-[50%] items-center justify-between">
           <div>
             <Link to="/" className="text-2xl font-bold ml-8">
-              <span className="text-3xl text-[#f7095c94]">S</span>hops
+              <span className="text-3xl text-[#f7095c94]">S</span>hop
               <span className="text-3xl text-[#06889994]">N</span>ow
             </Link>
           </div>
           <ul className=" hidden md:flex w-[60%] justify-evenly  items-center font-semibold text-[#605f5f] text-[1rem]">
-            <li className="hover:text-black hover:border-b-2 hover:border-yellow-400">
+            <li
+              className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
+                location.pathname == "/"
+                  ? "border-b-2 border-yellow-400 text-black"
+                  : ""
+              }`}
+            >
               <Link to="/">Home</Link>
             </li>
-            <li className="hover:text-black hover:border-b-2 hover:border-yellow-400">
+            <li
+              className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
+                location.pathname == "/products"
+                  ? "border-b-2 border-yellow-400 text-black"
+                  : ""
+              }`}
+            >
               <Link to="/products">Products</Link>
             </li>
-            <li className="hover:text-black hover:border-b-2 hover:border-yellow-400">
+            <li
+              className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
+                location.pathname == "/category"
+                  ? "border-b-2 border-yellow-400 text-black"
+                  : ""
+              }`}
+            >
               <Link to="/category">Category</Link>
             </li>
-            <li className="hover:text-black hover:border-b-2 hover:border-yellow-400">
+            <li
+              className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
+                location.pathname == "/about"
+                  ? "border-b-2 border-yellow-400 text-black"
+                  : ""
+              }`}
+            >
               <Link to="/about">About</Link>
             </li>
           </ul>

@@ -18,6 +18,7 @@ const productSchema = new mongoose.Schema({
   discountedPrice: { type: Number }, // Optional, calculated field
 
   quantity: { type: Number, required: true },
+  orderCount: { type: Number, default: 0 }, //to count total orders of product
   isInStock: { type: Boolean, default: true },
 
   images: [{ type: String }], // Array of image URLs

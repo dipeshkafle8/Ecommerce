@@ -1,12 +1,9 @@
 import { Eye, EyeOff, Lock, User } from "lucide-react";
-import { useContext, useState } from "react";
-import UserContext from "../UserContext";
+import { useState } from "react";
+
 import { Link } from "react-router-dom";
 
 function Login() {
-  const { userDetails } = useContext(UserContext);
-  const [user, setUser] = userDetails;
-  console.log(user.isLogged);
   const [showPassword, setShowPassword] = useState(false);
 
   function sendUserDetailsToBackEnd(user) {
