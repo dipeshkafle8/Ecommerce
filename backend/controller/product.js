@@ -146,10 +146,36 @@ const applyPagination = async (req, res) => {
   }
 };
 
+const retrieveCategoryProduct = async (req, res) => {
+  try {
+    // can i retrieve the product of category if category is some sort of array
+    const { categoryId } = req.params;
+    const categoryProducts = await ProductModel.find({ category: categoryId });
+    if (categoryProducts) {
+      res.status(200).json({
+        message: "Fetched all the products",
+        status: 1,
+        products: categoryProducts,
+      });
+    } else {
+      res.status(401).json({
+        message: "category products not found",
+        status: 0,
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      message: "Internal server issue",
+      status: 0,
+    });
+  }
+};
+
 module.exports = {
   addProducts,
   getParticularProducts,
   getProducts,
   deleteParticularProduct,
   applyPagination,
+  retrieveCategoryProduct,
 };
