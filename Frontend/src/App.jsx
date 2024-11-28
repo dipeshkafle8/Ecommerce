@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import fetchDataFromAPI from "./components/Products/fetchDataFromAPI";
+import fetchDataFromAPI from "./components/fetchDataFromAPI";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import FrontPage from "./components/FrontPage/FrontPage";

@@ -57,9 +57,10 @@ const addProducts = async (req, res) => {
   try {
     const productData = req.body;
     const { category } = req.body;
+    const { images } = req.body;
     const isCategory = await categoryModel.findOne({ name: category });
-    console.log(isCategory);
-    console.log(productData);
+
+    console.log(images);
 
     if (isCategory) {
       const productSave = await new ProductModel({
@@ -85,6 +86,7 @@ const addProducts = async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Internal server error",
       status: 0,
@@ -165,6 +167,31 @@ const getFamousProduct = async (req, res) => {
   }
 };
 
+//to apply filtering for products
+const applyFilters = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { categories, priceRange } = req.body;
+    let query = {};
+    if (categories && categories.length > 0) {
+      query.category = { $in: categories };
+    }
+    if (priceRange && priceRange.length == 2) {
+      query.price = { $gte: priceRange[0], $lte: priceRange[1] };
+    }
+    console.log(query);
+    const products = await ProductModel.find(query);
+
+    res.status(200).json({ status: 1, products });
+  } catch (err) {
+    console.log("Error in getting filtering");
+    res.status(500).json({
+      status: 0,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
   addProducts,
   getParticularProducts,
@@ -172,4 +199,5 @@ module.exports = {
   deleteParticularProduct,
   applyPagination,
   getFamousProduct,
+  applyFilters,
 };

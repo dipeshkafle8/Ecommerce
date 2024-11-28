@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import fetchDataFromAPI from "./fetchDataFromAPI";
+import fetchDataFromAPI from "../fetchDataFromAPI";
 import FilteredProducts from "./FilterProducts";
 
 function Products() {
@@ -8,24 +8,25 @@ function Products() {
   const [isLoading, setIsLoading] = useState(true);
 
   const location = useLocation();
-  console.log(location);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchDataFromAPI(
-          "https://fakestoreapi.com/products"
+          "http://localhost:3000/api/v1/products/getProducts"
         );
-        console.log(data);
-        setProducts(data);
-        setIsLoading(false);
+
+        if (data.status) {
+          setProducts(data.responseData.products);
+        }
       } catch (error) {
-        console.log(error);
-        setIsLoading(true);
+        console.log("Error in getting products from backend");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
   }, []);
-  console.log(products);
 
   if (isLoading) {
     console.log("Inside loading");
@@ -35,21 +36,25 @@ function Products() {
   return (
     <>
       <div className="mt-24 flex flex-col md:flex-row">
-        <FilteredProducts products={products} setProducts={setProducts} />
+        <FilteredProducts
+          products={products}
+          setProducts={setProducts}
+          setIsLoading={setIsLoading}
+        />
         <div className="ml-8 flex w-full flex-1 flex-wrap gap-x-4 gap-y-4 justify-evenly">
           {products.map((product) => {
             return (
               <div
-                key={product.id}
-                className=" flex flex-col justify-center items-center shadow-lg max-w-sm p-4 hover:shadow-2xl hover:cursor-pointer rounded-lg"
+                key={product._id}
+                className="flex flex-col justify-center items-center shadow-lg max-w-sm p-4 hover:shadow-2xl hover:cursor-pointer rounded-lg"
               >
                 <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-60 h-64"
+                  src={product.images[0]}
+                  alt={product.name}
+                  className="w-[18rem]"
                 />
                 <h1 className="text-xl font-semibold text-center">
-                  {product.title}
+                  {product.name}
                 </h1>
                 <h2 className="text-lg m-2">INR: Rs{product.price}</h2>
                 <div className="flex justify-between">

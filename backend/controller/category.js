@@ -42,6 +42,7 @@ const createCategory = async (req, res) => {
 const getCategory = async (req, res) => {
   try {
     const category = await categoryModel.find({});
+
     if (category) {
       res.status(200).json({
         message: "category found ",
