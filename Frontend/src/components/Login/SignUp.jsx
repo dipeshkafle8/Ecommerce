@@ -1,24 +1,32 @@
 import { Eye, EyeOff, Lock, Mail, User, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
 
-  function sendUserDetailsToBackEnd(user) {
-    console.log(user);
+  async function sendUserDetailsToBackEnd(user) {
+    try {
+      let res = await axios.post("http://localhost:3000/user/register", user);
+      console.log(res.data);
+    } catch (err) {
+      console.log("Error in sending request");
+    }
   }
 
   function handleFormData(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
     let obj = {
-      username: formData.get("username") ?? "",
+      fullname: formData.get("fullname") ?? "",
       email: formData.get("email") ?? "",
-      phone: formData.get("phone") ?? "",
+      phone_number: formData.get("phone") ?? "",
       password: formData.get("password") ?? "",
     };
+
     sendUserDetailsToBackEnd(obj);
+    e.target.reset();
   }
 
   return (
@@ -33,14 +41,14 @@ function SignUp() {
               htmlFor="username"
               className="block text-lg font-medium mb-2"
             >
-              Username
+              Name
             </label>
             <div className="flex items-center border border-gray-300 p-2 rounded">
               <User className="mr-2" />
               <input
                 type="text"
-                id="username"
-                name="username"
+                id="fullname"
+                name="fullname"
                 className="w-full outline-none"
                 required
               />
@@ -76,6 +84,7 @@ function SignUp() {
               />
             </div>
           </div>
+
           <div className="mb-4">
             <label
               htmlFor="password"

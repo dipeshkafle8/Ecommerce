@@ -1,20 +1,40 @@
-import { Eye, EyeOff, Lock, User } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
+import axios from "axios";
 
 import { Link } from "react-router-dom";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isloading, setIsloading] = useState(false);
 
-  function sendUserDetailsToBackEnd(user) {
-    console.log(user);
+  async function sendUserDetailsToBackEnd(user) {
+    setIsloading(true);
+    try {
+      let res = await axios.post("http://localhost:3000/user/login", user);
+      console.log(res.data);
+      if (res.data.status) {
+        let obj = {
+          username: JSON.stringify(res.data.name),
+          email: JSON.stringify(res.data.email),
+        };
+        localStorage.setItem("token", JSON.stringify(res.data.token));
+        localStorage.setItem("User", JSON.stringify(obj));
+      } else {
+        console.log("Error in logging user");
+      }
+    } catch (err) {
+      console.log("Error in logging user");
+    } finally {
+      setIsloading(false);
+    }
   }
 
   function handleFormData(e) {
     e.preventDefault();
     let formData = new FormData(e.target);
     let obj = {
-      username: formData.get("username") ?? "",
+      email: formData.get("email") ?? "",
       password: formData.get("password") ?? "",
     };
     sendUserDetailsToBackEnd(obj);
@@ -30,14 +50,14 @@ function Login() {
               htmlFor="username"
               className="block text-lg font-medium mb-2"
             >
-              Username
+              Email:
             </label>
             <div className="flex items-center border border-gray-300 p-2 rounded">
-              <User className="mr-2" />
+              <Mail className="mr-2" />
               <input
-                type="text"
-                id="username"
-                name="username"
+                type="email"
+                id="email"
+                name="email"
                 className="w-full outline-none"
                 required
               />

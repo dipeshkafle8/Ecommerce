@@ -31,7 +31,7 @@ const handelUserLogin = async (req, res) => {
         { id: isExistingUser._id },
         process.env.jwtSecret,
         {
-          expiresIn: 300,
+          expiresIn: "4h",
         }
       );
 
@@ -66,6 +66,8 @@ const handelUserLogin = async (req, res) => {
 
 const handelUserRegister = async (req, res) => {
   try {
+    console.log(req.body);
+
     const validateUserRegister = userRegisterSchema.parse(req.body);
     const { fullname, email, password, phone_number } = validateUserRegister;
 

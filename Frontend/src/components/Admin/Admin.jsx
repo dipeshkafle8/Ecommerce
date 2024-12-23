@@ -1,33 +1,14 @@
 import { storage } from "../Firebase/Config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { useEffect, useState, useRef } from "react";
-
+import { useRef, useContext } from "react";
 import { Button } from "../ui/button";
-import fetchDataFromAPI from "../fetchDataFromAPI";
 import sendDataToTheBackEnd from "./sendDataToBackEnd";
 import Swal from "sweetalert2";
-
+import { CategoryContext } from "../CategoryProvider";
 function Admin() {
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  //custom hook for fetching categories from backend
+  const { categories, isCategoryLoading } = useContext(CategoryContext);
   const formRef = useRef(null);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await fetchDataFromAPI(
-          "http://localhost:3000/api/v1/category/getCategory"
-        );
-
-        console.log(result.category);
-        setCategories(result.responseData.category);
-      } catch (err) {
-        console.log("Error in getting categories" + err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   async function handleInputOnSubmit(e) {
     e.preventDefault();
@@ -77,7 +58,7 @@ function Admin() {
     }
   }
 
-  if (isLoading) {
+  if (isCategoryLoading) {
     return <div className="mt-16">Loading....</div>;
   }
   return (

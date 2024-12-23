@@ -2,7 +2,18 @@ const { ProductModel } = require("../model/product");
 const { categoryModel } = require("../model/category");
 const getProducts = async (req, res) => {
   try {
-    const products = await ProductModel.find({});
+    //if came through category
+    const { category } = req.query;
+    console.log(category);
+    let products;
+    if (!category) {
+      products = await ProductModel.find({});
+    } else {
+      /*we are getting category name but in products we have stored id of category
+       that's why in order to get categoryId */
+      let categoryDetails = await categoryModel.findOne({ name: category });
+      products = await ProductModel.find({ category: categoryDetails._id });
+    }
 
     if (products) {
       res.status(200).json({
@@ -59,8 +70,6 @@ const addProducts = async (req, res) => {
     const { category } = req.body;
     const { images } = req.body;
     const isCategory = await categoryModel.findOne({ name: category });
-
-    console.log(images);
 
     if (isCategory) {
       const productSave = await new ProductModel({
@@ -170,7 +179,6 @@ const getFamousProduct = async (req, res) => {
 //to apply filtering for products
 const applyFilters = async (req, res) => {
   try {
-    console.log(req.body);
     const { categories, priceRange } = req.body;
     let query = {};
     if (categories && categories.length > 0) {

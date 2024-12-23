@@ -75,9 +75,12 @@ function Navbar() {
             </li>
 
             <li>
-              <button className="hover:bg-[rgba(61,61,61,0.1)] bg-transparent  w-8 h-8 flex items-center justify-center">
+              <Link
+                to="/cart"
+                className="hover:bg-[rgba(61,61,61,0.1)] bg-transparent  w-8 h-8 flex items-center justify-center"
+              >
                 <ShoppingCart />
-              </button>
+              </Link>
             </li>
             {!isLoggedIn ? (
               <li className="px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md">

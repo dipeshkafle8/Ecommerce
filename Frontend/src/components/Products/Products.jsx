@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import fetchDataFromAPI from "../fetchDataFromAPI";
 import FilteredProducts from "./FilterProducts";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const location = useLocation();
+  const { category } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchDataFromAPI(
-          "http://localhost:3000/api/v1/products/getProducts"
-        );
+        let data;
+        if (!category) {
+          data = await fetchDataFromAPI(
+            "http://localhost:3000/api/v1/products/getProducts"
+          );
+        } else {
+          data = await fetchDataFromAPI(
+            `http://localhost:3000/api/v1/products/getProducts?category=${category}`
+          );
+        }
 
         if (data.status) {
           setProducts(data.responseData.products);

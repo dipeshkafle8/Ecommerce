@@ -1,5 +1,6 @@
 import backImg from "./images/background.jpg";
 import DisplayFamousProduct from "./DisplayFamousProduct";
+import { Link } from "react-router-dom";
 function FrontPage() {
   return (
     <>
@@ -15,9 +16,12 @@ function FrontPage() {
             <p className="text-xl font-semibold">
               Your one-stop shop for all your needs.
             </p>
-            <button className="py-2 px-8 bg-[#e02aaa] mt-4 rounded-md text-lg hover:bg-[#902e73] font-semibold">
+            <Link
+              to="/products"
+              className="py-2 px-8 bg-[#e02aaa] mt-4 rounded-md text-lg hover:bg-[#902e73] font-semibold"
+            >
               ShopNow
-            </button>
+            </Link>
           </div>
         </div>
         <DisplayFamousProduct />

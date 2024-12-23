@@ -1,37 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Slider } from "../ui/slider";
 import { Input } from "../ui/input";
 import axios from "axios";
-import fetchDataFromAPI from "../fetchDataFromAPI";
-
+import { CategoryContext } from "../CategoryProvider";
 // eslint-disable-next-line react/prop-types
-const FilteredProducts = React.memo(({ setProducts, setIsLoading }) => {
-  const [categories, setCategories] = useState([]); //for getting all categories
+const FilteredProducts = ({ products, setProducts, setIsLoading }) => {
+  const { categories, isCategoryLoading } = useContext(CategoryContext);
   const [isBarHidden, setIsBarHidden] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 50000]);
-  const [isCategoryLoading, setIsCategoryLoading] = useState(true);
-
-  //fetching the category from backend
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await fetchDataFromAPI(
-          "http://localhost:3000/api/v1/category/getCategory"
-        );
-        if (result.status) setCategories(result.responseData.category);
-      } catch (err) {
-        console.log("Error in getting categories" + err);
-      } finally {
-        setIsCategoryLoading(false);
-      }
-    };
-    fetchCategories();
-  }, []);
-
   const handleCategoryChange = (name) => {
     const category = name;
     setSelectedCategories((prevSelectedCategories) => {
@@ -149,6 +129,6 @@ const FilteredProducts = React.memo(({ setProducts, setIsLoading }) => {
       </button>
     </>
   );
-});
+};
 
 export default FilteredProducts;

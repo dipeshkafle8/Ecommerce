@@ -9,12 +9,17 @@ const userSchema = mongoose.Schema({
   },
   password: String,
   isVerified: {
-    type:Boolean,
-    default:false
+    type: Boolean,
+    default: false,
   },
   isActive: {
-    type:Boolean,
-    default:true
+    type: Boolean,
+    default: true,
+  },
+  phone_number: {
+    type: String,
+    required: true,
+    unique: true,
   },
   address: [
     {
@@ -29,13 +34,13 @@ const userSchema = mongoose.Schema({
     default: "user",
   },
   createdAt: {
-    type:String,
-    default:Date.now()
+    type: String,
+    default: Date.now(),
   },
   updateAt: Date,
 });
 
 const userModel = mongoose.model("User", userSchema);
 module.exports = {
-    userModel
-}
+  userModel,
+};

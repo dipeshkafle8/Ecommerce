@@ -9,29 +9,26 @@ import Login from "./components/Login/Login";
 import SignUp from "./components/Login/SignUp";
 import Admin from "./components/Admin/Admin";
 import Footer from "./components/Footer/Footer";
+import Category from "./components/Category/Category";
+import { CategoryProvider } from "./components/CategoryProvider";
 
 function App() {
-  useEffect(() => {
-    let requestBackEnd = async () => {
-      let result = await fetchDataFromAPI(
-        "http://localhost:3000/api/v1/category/getCategory"
-      );
-      setAllCategory(result.category);
-    };
-    requestBackEnd();
-  }, []);
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<FrontPage />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<SignUp />} />
-          <Route path="/admin" element={<Admin />} />
-        </Routes>
-        <Footer />
+        <CategoryProvider>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<FrontPage />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<SignUp />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/category" element={<Category />} />
+            <Route path="products/:category" element={<Products />} />
+          </Routes>
+          <Footer />
+        </CategoryProvider>
       </BrowserRouter>
     </>
   );
