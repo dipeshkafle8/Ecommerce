@@ -37,9 +37,11 @@ const handelUserLogin = async (req, res) => {
 
       res.status(201).json({
         message: "User login successfully",
-        name: isExistingUser.fullname,
-        email: email,
-        role: isExistingUser.role,
+        user: {
+          name: isExistingUser.fullname,
+          email: isExistingUser.email,
+          role: isExistingUser.role,
+        },
         token: jwtToken,
         status: 1,
       });

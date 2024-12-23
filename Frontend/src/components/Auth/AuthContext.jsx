@@ -1,13 +1,15 @@
 import { createContext, useEffect, useState } from "react";
-
 export const UserContext = createContext();
 
-export const AuthProvider = async ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const loggedUser = localStorage.getItem("User");
+    let token = localStorage.getItem("token");
+    token = JSON.parse(token);
+    let loggedUser = localStorage.getItem("User");
+    loggedUser = JSON.parse(loggedUser);
+
     if (token) {
       const verifyToken = async () => {
         try {
@@ -17,12 +19,16 @@ export const AuthProvider = async ({ children }) => {
               "Content-type": "application/json",
               authorization: `Bearer ${token}`,
             },
-            body: loggedUser.email,
+            body: JSON.stringify({ email: loggedUser.email }),
           });
           res = await res.json();
-          console.log(res);
+
           if (res.status) {
+            setUser(res.user);
             console.log("Session is Valid");
+          } else {
+            localStorage.removeItem("token");
+            localStorage.removeItem("User");
           }
         } catch (err) {
           console.log("Error");
@@ -31,6 +37,8 @@ export const AuthProvider = async ({ children }) => {
         }
       };
       verifyToken();
+    } else {
+      setIsLoading(false);
     }
   }, []);
   if (isLoading) {

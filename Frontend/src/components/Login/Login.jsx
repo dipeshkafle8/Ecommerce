@@ -1,25 +1,30 @@
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
+import { UserContext } from "../Auth/AuthContext";
 
 import { Link } from "react-router-dom";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isloading, setIsloading] = useState(false);
+  const { user, setUser } = useContext(UserContext);
 
   async function sendUserDetailsToBackEnd(user) {
     setIsloading(true);
     try {
       let res = await axios.post("http://localhost:3000/user/login", user);
-      console.log(res.data);
+
       if (res.data.status) {
         let obj = {
-          username: JSON.stringify(res.data.name),
-          email: JSON.stringify(res.data.email),
+          username: res.data.user.name,
+          email: res.data.user.email,
         };
+
         localStorage.setItem("token", JSON.stringify(res.data.token));
         localStorage.setItem("User", JSON.stringify(obj));
+
+        setUser(res.data.user);
       } else {
         console.log("Error in logging user");
       }
