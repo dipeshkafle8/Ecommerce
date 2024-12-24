@@ -4,11 +4,14 @@ import { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Profile from "./Profile";
 import { UserContext } from "../Auth/AuthContext";
+import { CartContext } from "../Cart/CartContext";
 function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { user, setUser } = useContext(UserContext);
+  const { cart } = useContext(CartContext);
   const location = useLocation();
+
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     setIsProfileOpen(false);
@@ -82,6 +85,11 @@ function Navbar() {
                 className="hover:bg-[rgba(61,61,61,0.1)] bg-transparent  w-8 h-8 flex items-center justify-center"
               >
                 <ShoppingCart />
+                {totalItems > 0 && (
+                  <span className="inline-block relative w-4 bottom-[0.5rem]  bg-green-300 text-black rounded-full text-xs px-[0.1rem] text-center">
+                    {totalItems}
+                  </span>
+                )}
               </Link>
             </li>
             {!user ? (

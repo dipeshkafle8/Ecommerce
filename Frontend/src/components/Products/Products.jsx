@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import fetchDataFromAPI from "../fetchDataFromAPI";
 import FilteredProducts from "./FilterProducts";
+import { CartContext } from "../Cart/CartContext";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [itemsInCart, setItemsInCart] = useState(0);
   const { category } = useParams();
+
+  const { addToCart, cart } = useContext(CartContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +37,14 @@ function Products() {
     };
     fetchData();
   }, []);
+
+  //first time addding to the cart
+  const handleAddToCart = async (id, product) => {
+    await addToCart({ id, product });
+    let index = cart.findIndex((item) => item._id == id);
+    console.log(cart[index].quantity);
+    setItemsInCart(() => cart[index].quantity);
+  };
 
   if (isLoading) {
     console.log("Inside loading");
@@ -64,9 +76,19 @@ function Products() {
                 </h1>
                 <h2 className="text-lg m-2">INR: Rs{product.price}</h2>
                 <div className="flex justify-between">
-                  <button className="ml-2 mr-2 px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md">
-                    Add to Cart
-                  </button>
+                  {itemsInCart ? (
+                    <span>-{` ${itemsInCart} `} +</span>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        handleAddToCart(product._id, product);
+                      }}
+                      className="ml-2 mr-2 px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md"
+                    >
+                      Add to Cart
+                    </button>
+                  )}
+
                   <button className="ml-2 mr-2 px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md">
                     Buy Now
                   </button>
