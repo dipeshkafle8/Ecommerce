@@ -12,7 +12,6 @@ function DisplayFamousProduct() {
         );
 
         if (result.status) {
-          console.log(result.responseData.products);
           setAllFamousProducts(result.responseData.products);
         }
       } catch (err) {

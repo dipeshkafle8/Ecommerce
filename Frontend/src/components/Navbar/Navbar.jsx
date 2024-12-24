@@ -1,11 +1,13 @@
 import { Search, ShoppingCart, User } from "lucide-react";
 import Ham from "./Ham";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Profile from "./Profile";
+import { UserContext } from "../Auth/AuthContext";
 function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, setUser } = useContext(UserContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -82,13 +84,13 @@ function Navbar() {
                 <ShoppingCart />
               </Link>
             </li>
-            {!isLoggedIn ? (
+            {!user ? (
               <li className="px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md">
                 <Link to="/login">Login</Link>
               </li>
             ) : null}
 
-            {isLoggedIn ? (
+            {user ? (
               <li>
                 <button
                   className="hover:bg-[rgba(61,61,61,0.1)] bg-transparent  w-8 h-8 flex items-center justify-center"
@@ -101,7 +103,7 @@ function Navbar() {
               </li>
             ) : null}
           </ul>
-          {isProfileOpen ? <Profile /> : null}
+          {isProfileOpen && user ? <Profile setUser={setUser} /> : null}
         </div>
       </nav>
     </>

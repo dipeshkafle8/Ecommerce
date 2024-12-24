@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-function Profile() {
+function Profile({ setUser }) {
   return (
     <>
       <div className="absolute bg-white z-50 right-2 top-16 w-56 rounded-sm p-4 flex flex-col  text-[#434141]">
@@ -11,7 +11,7 @@ function Profile() {
             <Link to="/orders">Your Orders</Link>
           </li>
           <li className="hover:text-black">
-            <Link to="/logout">Log out</Link>
+            <button onClick={() => setUser(null)}>Log out</button>
           </li>
         </ul>
       </div>

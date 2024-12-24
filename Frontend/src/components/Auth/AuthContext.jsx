@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
             setUser(res.user);
             console.log("Session is Valid");
           } else {
+            console.log("session is invalid");
             localStorage.removeItem("token");
             localStorage.removeItem("User");
           }
@@ -38,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       };
       verifyToken();
     } else {
+      console.log("Token is not provided");
       setIsLoading(false);
     }
   }, []);
