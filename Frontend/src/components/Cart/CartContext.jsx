@@ -1,7 +1,6 @@
 import { createContext, useReducer, useContext, useEffect } from "react";
-import cartReducer from "./CartReducer";
+import cartReducer from "./cartReducer";
 import { UserContext } from "../Auth/AuthContext";
-import { stringify } from "postcss";
 
 export const CartContext = createContext();
 
@@ -30,12 +29,14 @@ export const CartProvider = ({ children }) => {
       let cartItems = localStorage.getItem("cart");
       cartItems = JSON.parse(cartItems);
       if (cartItems) {
-        cartItems = cartItems.map((item) =>
-          item._id === id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-        console.log(cartItems);
+        let index = cartItems.findIndex((item) => item._id === id);
+        if (index !== -1) {
+          cartItems[index].itemsCount += 1; //itemCounts no of quantity in cart
+        } else {
+          cartItems = [...cartItems, { ...product, itemsCount: 1 }];
+        }
       } else {
-        cartItems = [{ ...product, quantity: 1 }];
+        cartItems = [{ ...product, itemsCount: 1 }];
       }
       localStorage.setItem("cart", JSON.stringify(cartItems));
     }
@@ -46,8 +47,8 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: "DELETE_FROM_CART", payload: { id } });
   };
 
-  const updateCartItem = ({ id, quantity }) => {
-    dispatch({ type: "UPDATE_CART_ITEM", payload: { id, quantity } });
+  const updateCartItem = ({ id, itemsCount }) => {
+    dispatch({ type: "UPDATE_CART_ITEM", payload: { id, itemsCount } });
   };
 
   const clearCart = () => {

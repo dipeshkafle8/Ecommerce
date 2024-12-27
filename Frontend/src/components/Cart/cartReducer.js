@@ -19,12 +19,12 @@ const cartReducer = (state, action) => {
       if (existingItem) {
         const updatedCart = state.cart.map((item) => {
           return item._id == id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, itemsCount: itemsCount.quantity + 1 }
             : item;
         });
         return { ...state, cart: updatedCart };
       } else {
-        const newItem = { ...product, quantity: 1 };
+        const newItem = { ...product, itemsCount: 1 };
         return { ...state, cart: [...state.cart, newItem] };
       }
 
@@ -34,12 +34,12 @@ const cartReducer = (state, action) => {
         cart: cart.filter((item) => action.payload.id != item._id),
       };
 
-    case "UPDATE_FROM_CART":
+    case "UPDATE_CART_ITEM":
       return {
         ...state,
         cart: state.cart.map((item) =>
           item._id === action.payload.id
-            ? { ...item, quantity: action.payload.quantity }
+            ? { ...item, itemsCount: action.payload.itemsCount }
             : item
         ),
       };

@@ -10,9 +10,9 @@ function Navbar() {
   const { user, setUser } = useContext(UserContext);
   const { cart } = useContext(CartContext);
   const location = useLocation();
-
-  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-
+  console.log(cart);
+  const totalItems = cart.reduce((total, item) => total + item.itemsCount, 0);
+  console.log(totalItems);
   useEffect(() => {
     setIsProfileOpen(false);
   }, [location]);
