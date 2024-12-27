@@ -1,2 +1,4 @@
+const express = require("express");
+const cartRouter = express.Router();
 
-// #TODO: apply add to cart logic and wish list logic
+module.exports = { cartRouter };

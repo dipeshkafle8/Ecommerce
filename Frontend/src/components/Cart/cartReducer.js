@@ -15,30 +15,32 @@ const cartReducer = (state, action) => {
       //get id and product from payload
       const { id, product } = action.payload;
       //check if previously in cart or not
-      const existingItem = state.cart.find((item) => item._id == id);
-      if (existingItem) {
-        const updatedCart = state.cart.map((item) => {
-          return item._id == id
-            ? { ...item, itemsCount: itemsCount.quantity + 1 }
-            : item;
-        });
-        return { ...state, cart: updatedCart };
-      } else {
-        const newItem = { ...product, itemsCount: 1 };
-        return { ...state, cart: [...state.cart, newItem] };
-      }
 
+      let updatedCart = [...state.cart];
+
+      let index = updatedCart.findIndex((item) => item.product._id === id);
+      if (index !== -1) {
+        updatedCart[index].itemsCount += 1;
+      } else {
+        updatedCart = [
+          ...updatedCart,
+          { product: { ...product }, itemsCount: 1 },
+        ];
+      }
+      return { ...state, cart: updatedCart };
+      break;
     case "DELETE_FROM_CART":
-      return {
-        ...state,
-        cart: cart.filter((item) => action.payload.id != item._id),
-      };
+      let newCart = [...state.cart];
+      newCart = newCart.filter(
+        (item) => action.payload.id !== item.product._id
+      );
+      return { ...state, cart: newCart };
 
     case "UPDATE_CART_ITEM":
       return {
         ...state,
         cart: state.cart.map((item) =>
-          item._id === action.payload.id
+          item.product._id === action.payload.id
             ? { ...item, itemsCount: action.payload.itemsCount }
             : item
         ),

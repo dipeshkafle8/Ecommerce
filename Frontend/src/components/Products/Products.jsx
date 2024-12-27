@@ -10,7 +10,8 @@ function Products() {
   const [isLoading, setIsLoading] = useState(true);
   const { category } = useParams();
 
-  const { addToCart, updateCartItem, cart } = useContext(CartContext);
+  const { addToCart, updateCartItem, deleteFromCart, cart } =
+    useContext(CartContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,26 +40,25 @@ function Products() {
   }, []);
 
   //first time addding to the cart
-  const handleAddToCart = async (id, product) => {
-    await addToCart({ id, product });
+  const handleAddToCart = (id, product) => {
+    console.log(cart);
+    addToCart({ id, product });
   };
-  const handleOnDecrement = async (id, itemsInCart) => {
-    if (itemsInCart === 0) return;
-    console.log(itemsInCart);
+  const handleOnDecrement = (id, itemsInCart) => {
     let itemsCount = itemsInCart - 1;
-    await updateCartItem({ id, itemsCount });
-    console.log("- returned");
+    if (itemsCount === 0) {
+      deleteFromCart({ id });
+      return;
+    }
+    updateCartItem({ id, itemsCount });
   };
 
-  const handleOnIncrement = async (id, itemsInCart) => {
-    console.log(itemsInCart);
+  const handleOnIncrement = (id, itemsInCart) => {
     let itemsCount = itemsInCart + 1;
-    await updateCartItem({ id, itemsCount });
-    console.log("+ returned");
+    updateCartItem({ id, itemsCount });
   };
 
   if (isLoading) {
-    console.log("Inside loading");
     return <div className="mt-28 text-center">Loading ...</div>;
   }
 
@@ -72,7 +72,9 @@ function Products() {
         />
         <div className="ml-8 flex w-full flex-1 flex-wrap gap-x-4 gap-y-4 justify-evenly">
           {products.map((product) => {
-            const cartItem = cart.find((item) => item._id === product._id);
+            const cartItem = cart.find(
+              (item) => item.product._id === product._id
+            );
             const itemCount = cartItem ? cartItem.itemsCount : 0;
             return (
               <div
