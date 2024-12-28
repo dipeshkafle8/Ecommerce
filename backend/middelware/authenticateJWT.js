@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const AuthenticatedUser = async (req, res, next) => {
+const isValidUser = async (req, res, next) => {
   try {
     let token = req.headers["authorization"].split(" ")[1];
 
@@ -13,5 +13,5 @@ const AuthenticatedUser = async (req, res, next) => {
   }
 };
 module.exports = {
-  AuthenticatedUser,
+  isValidUser,
 };

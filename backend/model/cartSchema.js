@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const itemSchema = new mongooose({
+const itemSchema = new mongoose.Schema({
   product: {
     type: Object,
     ref: "Product",
@@ -38,4 +38,5 @@ const cartSchema = new mongoose.Schema({
 });
 
 const Cart = mongoose.model("Cart", cartSchema);
-module.exports = Cart;
+
+module.exports = { Cart };

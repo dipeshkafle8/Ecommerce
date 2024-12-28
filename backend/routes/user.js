@@ -1,12 +1,12 @@
 const express = require("express");
 const { userModel } = require("../model/UserModel");
 const userRouter = new express.Router();
-const { AuthenticatedUser } = require("../middelware/authenticateJWT");
+const { isValidUser } = require("../middelware/authenticateJWT");
 const { handelUserLogin, handelUserRegister } = require("../controller/user");
 
 userRouter.post("/login", handelUserLogin);
 userRouter.post("/register", handelUserRegister);
-userRouter.post("/checkUserSession", AuthenticatedUser, async (req, res) => {
+userRouter.post("/checkUserSession", isValidUser, async (req, res) => {
   try {
     let user = await userModel.findOne({ email: req.body.email });
     if (!user) {

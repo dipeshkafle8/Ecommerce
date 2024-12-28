@@ -1,6 +1,7 @@
 import { createContext, useReducer, useContext, useEffect } from "react";
 import cartReducer from "./cartReducer";
 import { UserContext } from "../Auth/AuthContext";
+import axios from "axios";
 
 export const CartContext = createContext();
 
@@ -14,18 +15,71 @@ export const CartProvider = ({ children }) => {
   const { user, setUser } = useContext(UserContext);
   const [state, dispatch] = useReducer(cartReducer, initialState);
   useEffect(() => {
-    if (user) {
-    } else {
-      const cartItems = JSON.parse(localStorage.getItem("cart"));
-
-      if (cartItems) {
-        dispatch({ type: "LOAD_CART", payload: { cartItems } });
+    const fetchCartItems = async () => {
+      if (user) {
+        try {
+          let token = localStorage.getItem("token");
+          token = JSON.parse(token);
+          if (token) {
+            let response = await axios.post(
+              "http://localhost:3000/api/v1/cart/getCartItems",
+              {
+                userId: user._id,
+              },
+              {
+                headers: {
+                  authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            console.log(response);
+          } else {
+            console.log("token is not provided");
+          }
+        } catch (err) {
+          console.log("Error in getting data");
+        }
+      } else {
+        const cartItems = JSON.parse(localStorage.getItem("cart"));
+        if (cartItems) {
+          dispatch({ type: "LOAD_CART", payload: { cartItems } });
+        }
       }
-    }
-  }, []);
+    };
+    fetchCartItems();
+  }, [user]);
 
-  const addToCart = ({ id, product }) => {
+  const addToCart = async ({ id, product }) => {
+    //if user is logged in
     if (user) {
+      let token = localStorage.getItem("token");
+      token = JSON.parse(token);
+      if (token) {
+        try {
+          let response = await axios.post(
+            "http://localhost:3000/api/v1/cart/addToCart",
+            {
+              userId: user._id,
+              productId: id,
+              product: product,
+            },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.data.status == 1) {
+            dispatch({ type: "ADD_TO_CART", payload: { id, product } });
+          } else {
+            console.log(response.data.msg);
+          }
+        } catch (err) {
+          console.log("Error in adding to the Cart to Backend");
+        }
+      } else {
+        console.log("Token is not provided while adding to Cart");
+      }
     }
     //if user is not logged In
     else {
