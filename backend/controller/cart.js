@@ -9,13 +9,11 @@ const getCartItems = async (req, res) => {
     if (!cart) {
       res.status(404).json({ status: 0, msg: "Cart not found" });
     }
-    res
-      .status(200)
-      .json({
-        status: 1,
-        msg: "Cart fetched Sucessfully",
-        cart: cart.cartItems,
-      });
+    res.status(200).json({
+      status: 1,
+      msg: "Cart fetched Sucessfully",
+      cart: cart.cartItems,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ status: 0, msg: "Error in getting Cart Details" });
@@ -47,7 +45,31 @@ const addToCart = async (req, res) => {
     res.status(500).json({ status: 0, msg: "Error adding to Cart" });
   }
 };
-const updateCartItem = async (req, res) => {};
+
+//while updating cart Item
+const updateCartItem = async (req, res) => {
+  let { userId, productId, updatedCount } = req.body;
+  try {
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      res.status(404).json({ status: 0, msg: "Cart doesn't exist" });
+    }
+
+    const cartItems = cart.cartItems.find(
+      (item) => item.product._id === productId
+    );
+
+    if (cartItems) {
+      cartItems.itemsCount = updatedCount;
+      await cart.save();
+      res.status(200).json({ status: 1, msg: "Product updated Sucessfully" });
+    } else {
+      res.status(404).json({ status: 0, msg: "Product not found in Cart" });
+    }
+  } catch (err) {
+    res.status(500).json({ status: 0, msg: "Error in updating cart in db" });
+  }
+};
 const deleteFromCart = async (req, res) => {};
 
 const clearCart = async (req, res) => {};

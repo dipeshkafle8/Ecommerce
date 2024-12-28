@@ -121,8 +121,37 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const updateCartItem = ({ id, itemsCount }) => {
+  const updateCartItem = async ({ id, itemsCount }) => {
     if (user) {
+      let token = localStorage.getItem("token");
+      token = JSON.parse(token);
+      if (token) {
+        try {
+          let response = await axios.post(
+            "http://localhost:3000/api/v1/cart/updateCartItem",
+            {
+              userId: user._id,
+              productId: id,
+              updatedCount: itemsCount,
+            },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.data.status === 1) {
+            dispatch({ type: "UPDATE_CART_ITEM", payload: { id, itemsCount } });
+          } else {
+            console.log(response.data.msg);
+          }
+        } catch (err) {
+          console.log(err);
+          console.log("Error in updating cart");
+        }
+      } else {
+        console.log("TOKEN is not found while updating cart");
+      }
     } else {
       try {
         let updatedCart = [...state.cart];

@@ -12,6 +12,7 @@ const cartRouter = express.Router();
 //to get cart Items
 cartRouter.post("/getCartItems", isValidUser, getCartItems);
 cartRouter.post("/addToCart", isValidUser, addToCart);
+cartRouter.post("/updateCartItem", isValidUser, updateCartItem);
 cartRouter.post("/deleteFromCart", isValidUser, deleteFromCart);
 cartRouter.post("/clearCart", isValidUser, clearCart);
 
