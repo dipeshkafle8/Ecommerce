@@ -32,7 +32,13 @@ export const CartProvider = ({ children }) => {
                 },
               }
             );
-            console.log(response);
+            //if response is successful
+            if (response.data.status === 1) {
+              const cartItems = response.data.cart;
+              dispatch({ type: "LOAD_CART", payload: { cartItems } });
+            } else {
+              console.log(response.data.msg);
+            }
           } else {
             console.log("token is not provided");
           }
@@ -69,7 +75,7 @@ export const CartProvider = ({ children }) => {
               },
             }
           );
-          if (response.data.status == 1) {
+          if (response.data.status === 1) {
             dispatch({ type: "ADD_TO_CART", payload: { id, product } });
           } else {
             console.log(response.data.msg);
