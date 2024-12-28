@@ -70,9 +70,41 @@ const updateCartItem = async (req, res) => {
     res.status(500).json({ status: 0, msg: "Error in updating cart in db" });
   }
 };
-const deleteFromCart = async (req, res) => {};
+const deleteFromCart = async (req, res) => {
+  let { userId, productId } = req.body;
+  try {
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      res.status(404).json({ status: 0, msg: "Cart doesn't exists" });
+    }
+    cart.cartItems = cart.cartItems.filter(
+      (item) => item.product._id !== productId
+    );
+    await cart.save();
+    res
+      .status(200)
+      .json({ status: 1, msg: "Item Sucessfully deleted From Cart" });
+  } catch (err) {
+    res.staus(500).json({ status: 0, msg: "Error in deletion on cart" });
+  }
+};
 
-const clearCart = async (req, res) => {};
+const clearCart = async (req, res) => {
+  let { userId } = req.body;
+  try {
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      res.status(400).json({ status: 0, msg: "Cart doesn't found" });
+    }
+    cart.cartItems = [];
+    await cart.save();
+    res
+      .status(200)
+      .json({ status: 1, msg: "Cart has been successfully cleared" });
+  } catch (err) {
+    res.status(500).json({ status: 1, msg: "Unable to Clear Cart" });
+  }
+};
 
 module.exports = {
   getCartItems,

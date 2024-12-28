@@ -109,15 +109,45 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const deleteFromCart = ({ id }) => {
-    try {
-      let updatedCart = [...state.cart];
-      updatedCart = updatedCart.filter((item) => item.product._id !== id);
+  const deleteFromCart = async ({ id }) => {
+    if (user) {
+      let token = localStorage.getItem("token");
+      token = JSON.parse(token);
+      if (token) {
+        try {
+          let response = await axios.post(
+            "http://localhost:3000/api/v1/cart/deleteFromCart",
+            {
+              userId: user._id,
+              productId: id,
+            },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.data.status === 1) {
+            dispatch({ type: "DELETE_FROM_CART", payload: { id } });
+          } else {
+            console.log(response.data.msg);
+          }
+        } catch (err) {
+          console.log("Error in delete from Cart");
+        }
+      } else {
+        console.log("Token doesn't exists");
+      }
+    } else {
+      try {
+        let updatedCart = [...state.cart];
+        updatedCart = updatedCart.filter((item) => item.product._id !== id);
 
-      localStorage.setItem("cart", JSON.stringify([]));
-      dispatch({ type: "DELETE_FROM_CART", payload: { id } });
-    } catch (err) {
-      console.log("Error in deleting product from cart Local Storage");
+        localStorage.setItem("cart", JSON.stringify([]));
+        dispatch({ type: "DELETE_FROM_CART", payload: { id } });
+      } catch (err) {
+        console.log("Error in deleting product from cart Local Storage");
+      }
     }
   };
 
@@ -165,9 +195,36 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const clearCart = () => {
-    localStorage.removeItem("cart");
-    dispatch({ type: "CLEAR_CART" });
+  const clearCart = async () => {
+    if (user) {
+      let token = localStorage.getItem("token");
+      token = JSON.parse(token);
+      if (token) {
+        try {
+          let response = await axios.post(
+            "http://localhost:3000/api/v1/cart/clearCart",
+            { userId: user._id },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.data.status === 1) {
+            dispatch({ type: "CLEAR_CART" });
+          } else {
+            console.log(response.data.msg);
+          }
+        } catch (err) {
+          console.log("Error in clearing cart");
+        }
+      } else {
+        console.log("Token not found");
+      }
+    } else {
+      localStorage.removeItem("cart");
+      dispatch({ type: "CLEAR_CART" });
+    }
   };
 
   return (
