@@ -140,10 +140,12 @@ export const CartProvider = ({ children }) => {
       }
     } else {
       try {
+        console.log("Inside delete");
+
         let updatedCart = [...state.cart];
         updatedCart = updatedCart.filter((item) => item.product._id !== id);
-
-        localStorage.setItem("cart", JSON.stringify([]));
+        console.log(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
         dispatch({ type: "DELETE_FROM_CART", payload: { id } });
       } catch (err) {
         console.log("Error in deleting product from cart Local Storage");
@@ -170,6 +172,7 @@ export const CartProvider = ({ children }) => {
               },
             }
           );
+
           if (response.data.status === 1) {
             dispatch({ type: "UPDATE_CART_ITEM", payload: { id, itemsCount } });
           } else {
@@ -196,6 +199,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const clearCart = async () => {
+    //if user is logged In
     if (user) {
       let token = localStorage.getItem("token");
       token = JSON.parse(token);
@@ -210,6 +214,7 @@ export const CartProvider = ({ children }) => {
               },
             }
           );
+          //if status==1
           if (response.data.status === 1) {
             dispatch({ type: "CLEAR_CART" });
           } else {

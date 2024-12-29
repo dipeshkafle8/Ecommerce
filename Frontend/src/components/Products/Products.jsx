@@ -41,7 +41,6 @@ function Products() {
 
   //first time addding to the cart
   const handleAddToCart = (id, product) => {
-    console.log(cart);
     addToCart({ id, product });
   };
   const handleOnDecrement = (id, itemsInCart) => {

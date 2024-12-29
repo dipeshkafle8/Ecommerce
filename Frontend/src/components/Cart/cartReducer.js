@@ -31,9 +31,11 @@ const cartReducer = (state, action) => {
       break;
     case "DELETE_FROM_CART":
       let newCart = [...state.cart];
+      console.log(newCart);
       newCart = newCart.filter(
         (item) => action.payload.id !== item.product._id
       );
+      console.log(newCart);
       return { ...state, cart: newCart };
 
     case "UPDATE_CART_ITEM":

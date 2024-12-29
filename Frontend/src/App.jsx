@@ -13,6 +13,7 @@ import Category from "./components/Category/Category";
 import { CategoryProvider } from "./components/CategoryProvider";
 import { AuthProvider } from "./components/Auth/AuthContext";
 import { CartProvider } from "./components/Cart/CartContext";
+import DisplayCartItem from "./components/Cart/DisplayCartItem";
 function App() {
   return (
     <>
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/register" element={<SignUp />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/category" element={<Category />} />
+                <Route path="/cart" element={<DisplayCartItem />} />
                 <Route path="products/:category" element={<Products />} />
               </Routes>
               <Footer />
