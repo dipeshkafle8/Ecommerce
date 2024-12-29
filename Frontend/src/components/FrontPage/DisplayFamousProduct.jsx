@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { CartContext } from "../Cart/CartContext";
+import ProductCard from "../ProductCard/ProductCard";
 
 import fetchDataFromAPI from "../fetchDataFromAPI";
 function DisplayFamousProduct() {
+  const { cart } = useContext(CartContext);
   const [isLoading, setIsLoading] = useState(true);
   const [allFamousProducts, setAllFamousProducts] = useState([]);
   useEffect(() => {
@@ -35,29 +38,16 @@ function DisplayFamousProduct() {
 
         <div className="ml-8 flex w-full flex-1 flex-wrap gap-x-4 gap-y-4 justify-evenly">
           {allFamousProducts.map((product) => {
+            const cartItem = cart.find(
+              (item) => item.product._id === product._id
+            );
+            const itemCount = cartItem ? cartItem.itemsCount : 0;
             return (
-              <div
-                key={`${product._id} famous`}
-                className=" flex flex-col justify-center items-center shadow-lg max-w-sm p-4 hover:shadow-2xl hover:cursor-pointer rounded-lg"
-              >
-                <img
-                  src={product?.images[0]}
-                  alt={product.name}
-                  className="w-60 h-64"
-                />
-                <h1 className="text-xl font-semibold text-center">
-                  {product.name}
-                </h1>
-                <h2 className="text-lg m-2">INR: Rs{product.price}</h2>
-                <div className="flex justify-between">
-                  <button className="ml-2 mr-2 px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md">
-                    Add to Cart
-                  </button>
-                  <button className="ml-2 mr-2 px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md">
-                    Buy Now
-                  </button>
-                </div>
-              </div>
+              <ProductCard
+                key={product._id}
+                itemCount={itemCount}
+                product={product}
+              />
             );
           })}
         </div>
