@@ -37,6 +37,7 @@ const getProducts = async (req, res) => {
 
 // based on slug
 const getParticularProducts = async (req, res) => {
+  console.log("hello");
   try {
     const { slug } = req.params;
     const product = await ProductModel.findOne({ slug: slug }).populate(

@@ -14,6 +14,8 @@ import { CategoryProvider } from "./components/CategoryProvider";
 import { AuthProvider } from "./components/Auth/AuthContext";
 import { CartProvider } from "./components/Cart/CartContext";
 import DisplayCartItem from "./components/Cart/DisplayCartItem";
+import ProductDetails from "./components/Products/ProductDetails";
+
 function App() {
   return (
     <>
@@ -31,6 +33,7 @@ function App() {
                 <Route path="/category" element={<Category />} />
                 <Route path="/cart" element={<DisplayCartItem />} />
                 <Route path="products/:category" element={<Products />} />
+                <Route path="product/:slug" element={<ProductDetails />} />
               </Routes>
               <Footer />
             </CategoryProvider>

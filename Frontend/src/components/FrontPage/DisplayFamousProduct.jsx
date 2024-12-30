@@ -38,6 +38,7 @@ function DisplayFamousProduct() {
 
         <div className="ml-8 flex w-full flex-1 flex-wrap gap-x-4 gap-y-4 justify-evenly">
           {allFamousProducts.map((product) => {
+            console.log(cart);
             const cartItem = cart.find(
               (item) => item.product._id === product._id
             );

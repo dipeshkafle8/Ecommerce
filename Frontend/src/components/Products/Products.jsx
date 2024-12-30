@@ -55,9 +55,11 @@ function Products() {
         />
         <div className="ml-8 flex w-full flex-1 flex-wrap gap-x-4 gap-y-4 justify-evenly">
           {products.map((product) => {
+            //if current product is present in cart or not
             const cartItem = cart.find(
               (item) => item.product._id === product._id
             );
+            //if present get how many items are there
             const itemCount = cartItem ? cartItem.itemsCount : 0;
             return (
               <ProductCard
