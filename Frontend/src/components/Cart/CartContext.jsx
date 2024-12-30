@@ -144,7 +144,7 @@ export const CartProvider = ({ children }) => {
 
         let updatedCart = [...state.cart];
         updatedCart = updatedCart.filter((item) => item.product._id !== id);
-        console.log(updatedCart);
+
         localStorage.setItem("cart", JSON.stringify(updatedCart));
         dispatch({ type: "DELETE_FROM_CART", payload: { id } });
       } catch (err) {

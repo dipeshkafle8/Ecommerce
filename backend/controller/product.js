@@ -37,7 +37,6 @@ const getProducts = async (req, res) => {
 
 // based on slug
 const getParticularProducts = async (req, res) => {
-  console.log("hello");
   try {
     const { slug } = req.params;
     const product = await ProductModel.findOne({ slug: slug }).populate(
@@ -200,7 +199,28 @@ const applyFilters = async (req, res) => {
     });
   }
 };
+const getSimilarProducts = async (req, res) => {
+  //productId of current product
+  const { category, productId } = req.query;
+  try {
+    const products = await ProductModel.find({
+      category: category,
+      _id: { $ne: productId },
+    }).limit(5);
 
+    if (products) {
+      res
+        .status(200)
+        .json({ status: 1, msg: "Products found", products: products });
+    } else {
+      res.status(404).json({ status: 0, msg: "Products not found" });
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ status: 0, msg: "Error in getting similar Products" });
+  }
+};
 module.exports = {
   addProducts,
   getParticularProducts,
@@ -209,4 +229,5 @@ module.exports = {
   applyPagination,
   getFamousProduct,
   applyFilters,
+  getSimilarProducts,
 };

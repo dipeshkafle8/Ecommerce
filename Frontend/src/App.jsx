@@ -14,7 +14,7 @@ import { CategoryProvider } from "./components/CategoryProvider";
 import { AuthProvider } from "./components/Auth/AuthContext";
 import { CartProvider } from "./components/Cart/CartContext";
 import DisplayCartItem from "./components/Cart/DisplayCartItem";
-import ProductDetails from "./components/Products/ProductDetails";
+import ProductDetails from "./components/ProductDetails/ProductDetails";
 
 function App() {
   return (
