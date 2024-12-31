@@ -3,8 +3,10 @@ import Ham from "./Ham";
 import { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Profile from "./Profile";
+import SearchBar from "../SearchBar/SearchBar";
 import { UserContext } from "../Auth/AuthContext";
 import { CartContext } from "../Cart/CartContext";
+
 function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user, setUser } = useContext(UserContext);
@@ -66,17 +68,10 @@ function Navbar() {
             </li>
           </ul>
         </div>
-        <div className="hidden md:block w-[30%] h-full font-semibold">
+        <div className="hidden md:block w-[40%] h-full font-semibold">
           <ul className="flex justify-evenly items-center h-full">
             <li className="flex">
-              <input
-                type="text"
-                placeholder="Search"
-                className=" rounded-sm text-center transition-all duration-300 ease-in-out w-24  transform-origin-right focus:border-2 focus:border-gray-200 focus:w-48"
-              />{" "}
-              <button className="hover:bg-[rgba(61,61,61,0.1)] bg-transparent  w-8 h-8 flex items-center justify-center">
-                <Search className="h-5 w-5" />
-              </button>
+              <SearchBar />
             </li>
 
             <li>

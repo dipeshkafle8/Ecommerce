@@ -221,6 +221,28 @@ const getSimilarProducts = async (req, res) => {
       .json({ status: 0, msg: "Error in getting similar Products" });
   }
 };
+
+//while searching in search bar to give recommendation
+const searchProducts = async (req, res) => {
+  const { query } = req.query;
+  try {
+    const products = await ProductModel.find({
+      name: { $regex: query, $options: "i" },
+    }).limit(6);
+
+    if (products.length > 0) {
+      res
+        .status(200)
+        .json({ status: 1, msg: "Suggestions fetched", suggestions: products });
+    } else {
+      res.status(404).json({ status: 0, msg: "Product suggestion not found" });
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ status: 0, msg: "Error in getting products suggestions" });
+  }
+};
 module.exports = {
   addProducts,
   getParticularProducts,
@@ -230,4 +252,5 @@ module.exports = {
   getFamousProduct,
   applyFilters,
   getSimilarProducts,
+  searchProducts,
 };

@@ -8,6 +8,7 @@ const {
   getFamousProduct,
   applyFilters,
   getSimilarProducts,
+  searchProducts,
 } = require("../controller/product");
 const { isAdmin } = require("../middelware/verifyJWT"); //use in addProduct
 const productRouter = new express.Router();
@@ -20,6 +21,7 @@ productRouter.delete("/deleteProduct/:id", isAdmin, deleteParticularProduct);
 productRouter.get("/getProduct/pageCount/:pageNo", applyPagination);
 productRouter.post("/filter", applyFilters);
 productRouter.get("/getSimilarProducts", getSimilarProducts);
+productRouter.get("/search", searchProducts);
 module.exports = {
   productRouter,
 };
