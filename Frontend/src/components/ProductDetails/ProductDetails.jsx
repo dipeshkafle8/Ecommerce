@@ -57,7 +57,6 @@ const ProductDetails = () => {
   const cartItem = cart.find((item) => item.product._id === product._id);
 
   const itemCount = cartItem ? cartItem.itemsCount : 0;
-  console.log(product);
 
   return (
     <>
