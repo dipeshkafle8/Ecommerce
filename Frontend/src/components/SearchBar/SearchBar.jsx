@@ -49,11 +49,12 @@ const SearchBar = () => {
   }, [query, fetchSuggestions]);
 
   const handleSearch = (to_Search) => {
-    Navigate(`/products/search=${to_Search}`);
+    Navigate(`/products?search=${to_Search}`);
   };
 
   //if clicked on product on suggestion
   const handleOnProductClick = (name) => {
+    setQuery(name);
     handleSearch(name);
   };
   //if enter is clicked

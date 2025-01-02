@@ -4,7 +4,7 @@ import fetchDataFromAPI from "./components/fetchDataFromAPI";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import FrontPage from "./components/FrontPage/FrontPage";
-import Products from "./components/Products/Products";
+import FilteredProducts from "./components/Products/FilterProducts";
 import Login from "./components/Login/Login";
 import SignUp from "./components/Login/SignUp";
 import Admin from "./components/Admin/Admin";
@@ -26,13 +26,16 @@ function App() {
               <Navbar />
               <Routes>
                 <Route path="/" element={<FrontPage />} />
-                <Route path="/products" element={<Products />} />
+                <Route path="/products" element={<FilteredProducts />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<SignUp />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/category" element={<Category />} />
                 <Route path="/cart" element={<DisplayCartItem />} />
-                <Route path="products/:category" element={<Products />} />
+                <Route
+                  path="products/:category"
+                  element={<FilteredProducts />}
+                />
                 <Route path="product/:slug" element={<ProductDetails />} />
               </Routes>
               <Footer />
