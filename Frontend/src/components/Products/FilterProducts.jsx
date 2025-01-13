@@ -63,9 +63,9 @@ const FilteredProducts = () => {
 
   return (
     <>
-      <div className="mt-28 flex flex-col md:flex-row">
+      <div className="mt-24 flex flex-col md:flex-row">
         {!isBarHidden ? (
-          <div className="p-4 ml-2 sticky top-20 flex flex-col h-[7rem] w-[19rem] border-2 border-[rgba(108,108,108,0.4)] md:w-[20rem] md:h-[32rem] rounded-sm shadow-lg cursor-pointer">
+          <div className="p-4 ml-2  top-20 flex flex-col h-[7rem] w-[19rem] border-2 border-[rgba(108,108,108,0.4)] md:w-[28rem] md:h-[32rem] rounded-sm shadow-lg cursor-pointer">
             <span className="text-center text-xl font-semibold">
               <Filter className="w-8 inline" /> Filtering
             </span>
@@ -118,7 +118,7 @@ const FilteredProducts = () => {
         ) : null}
         <button
           onClick={() => setIsBarHidden(!isBarHidden)}
-          className={`sticky top-20 h-8 inline px-4 border-2 border-[rgba(108,108,108,0.4)] hover:bg-blue-100 rounded-sm ${
+          className={` top-20 h-8 inline px-4 border-2 border-[rgba(108,108,108,0.4)] hover:bg-blue-100 rounded-sm ${
             isBarHidden ? "left-0" : "left-[20rem]"
           }`}
         >

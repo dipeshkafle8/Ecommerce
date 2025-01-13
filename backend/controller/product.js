@@ -3,7 +3,10 @@ const { categoryModel } = require("../model/category");
 const getProducts = async (req, res) => {
   try {
     //if came through category
-    const { filterData, searchQuery } = req.query;
+    const { filterData, searchQuery, page } = req.query;
+    let skipProducts = (page - 1) * 5;
+    console.log(page);
+    console.log(skipProducts);
     let query = {};
 
     //Apply category filter
@@ -23,7 +26,7 @@ const getProducts = async (req, res) => {
       query.name = { $regex: searchQuery, $options: "i" };
     }
 
-    const products = await ProductModel.find(query);
+    const products = await ProductModel.find(query).skip(skipProducts).limit(5);
 
     if (products) {
       res.status(200).json({

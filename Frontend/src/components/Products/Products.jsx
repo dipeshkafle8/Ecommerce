@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
 import axios from "axios";
-import fetchDataFromAPI from "../fetchDataFromAPI";
 import { CartContext } from "../Cart/CartContext";
 import ProductCard from "../ProductCard/ProductCard";
+import { RefreshCw } from "lucide-react";
 
 function Products({ filterButton, filterData }) {
   //if came through search bar get the query from there
@@ -13,11 +13,12 @@ function Products({ filterButton, filterData }) {
   const [isLoading, setIsLoading] = useState(true);
   const { cart } = useContext(CartContext);
 
-  console.log("rendering product page");
+  //for handling loadmore button
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchFilteredData = async () => {
-      console.log("Rendering inside project");
       try {
         const response = await axios.get(
           "http://localhost:3000/api/v1/products/getProducts",
@@ -25,11 +26,19 @@ function Products({ filterButton, filterData }) {
             params: {
               filterData: filterData,
               searchQuery: searchQuery,
+              page: page,
             },
           }
         );
         if (response.data.status) {
-          setProducts(response.data.products);
+          const newProducts = response.data.products;
+          //there is no remaining products so disable load more
+          if (newProducts.length < 5) {
+            setHasMore(false);
+          }
+
+          //append new products to the product state array
+          setProducts((prevProducts) => [...prevProducts, ...newProducts]);
         } else {
           console.log(response.data.msg);
         }
@@ -40,58 +49,44 @@ function Products({ filterButton, filterData }) {
       }
     };
     fetchFilteredData();
-  }, [filterButton, searchQuery]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       let data;
-  //       if (!category) {
-  //         data = await fetchDataFromAPI(
-  //           "http://localhost:3000/api/v1/products/getProducts"
-  //         );
-  //       } else {
-  //         data = await fetchDataFromAPI(
-  //           `http://localhost:3000/api/v1/products/getProducts?category=${category}`
-  //         );
-  //       }
-
-  //       if (data.status) {
-  //         setProducts(data.responseData.products);
-  //       }
-  //     } catch (error) {
-  //       console.log("Error in getting products from backend");
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
-  //first time addding to the cart
+  }, [filterButton, searchQuery, page]);
 
   if (isLoading) {
     return <div className="mt-28 text-center">Loading ...</div>;
   }
+  console.log(products);
 
   return (
     <>
-      <div className="ml-8 flex w-full flex-1 flex-wrap gap-x-4 gap-y-4 justify-evenly">
-        {products.map((product) => {
-          //if current product is present in cart or not
-          const cartItem = cart.find(
-            (item) => item.product._id === product._id
-          );
-          //if present get how many items are there
-          const itemCount = cartItem ? cartItem.itemsCount : 0;
-          return (
-            <ProductCard
-              key={product._id}
-              itemCount={itemCount}
-              product={product}
-            />
-          );
-        })}
+      <div className="ml-8 w-full flex  flex-col">
+        <div className="flex w-full flex-1 flex-wrap gap-x-4 gap-y-4 justify-evenly">
+          {products.map((product) => {
+            //if current product is present in cart or not
+            const cartItem = cart.find(
+              (item) => item.product._id === product._id
+            );
+            //if present get how many items are there
+            const itemCount = cartItem ? cartItem.itemsCount : 0;
+            console.log(hasMore);
+            return (
+              <ProductCard
+                key={product._id}
+                itemCount={itemCount}
+                product={product}
+              />
+            );
+          })}
+        </div>
+        <div className="w-full flex justify-center m-4  mt-8 p-4">
+          {hasMore ? (
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              className="py-2 px-8 bg-[rgb(50,114,122)] hover:bg-[rgb(27,62,66)] text-white rounded-sm"
+            >
+              Load more <RefreshCw className="inline-block" />
+            </button>
+          ) : null}
+        </div>
       </div>
     </>
   );
