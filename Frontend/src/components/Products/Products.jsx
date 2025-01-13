@@ -9,58 +9,64 @@ function Products({ filterButton, filterData }) {
   //if came through search bar get the query from there
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
-
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { category } = useParams();
   const { cart } = useContext(CartContext);
 
-  useEffect(() => {
-    if (filterButton !== 0) {
-      const fetchFilteredData = async () => {
-        try {
-          const response = await axios.post(
-            "http://localhost:3000/api/v1/products/filter",
-            filterData
-          );
-          if (response.data.status) {
-            setProducts(response.data.products);
-          } else {
-            console.log(response.data.msg);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      fetchFilteredData();
-    }
-  }, [filterButton]);
+  console.log("rendering product page");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchFilteredData = async () => {
+      console.log("Rendering inside project");
       try {
-        let data;
-        if (!category) {
-          data = await fetchDataFromAPI(
-            "http://localhost:3000/api/v1/products/getProducts"
-          );
+        const response = await axios.get(
+          "http://localhost:3000/api/v1/products/getProducts",
+          {
+            params: {
+              filterData: filterData,
+              searchQuery: searchQuery,
+            },
+          }
+        );
+        if (response.data.status) {
+          setProducts(response.data.products);
         } else {
-          data = await fetchDataFromAPI(
-            `http://localhost:3000/api/v1/products/getProducts?category=${category}`
-          );
+          console.log(response.data.msg);
         }
-
-        if (data.status) {
-          setProducts(data.responseData.products);
-        }
-      } catch (error) {
-        console.log("Error in getting products from backend");
+      } catch (err) {
+        console.log(err);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchData();
-  }, []);
+    fetchFilteredData();
+  }, [filterButton, searchQuery]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let data;
+  //       if (!category) {
+  //         data = await fetchDataFromAPI(
+  //           "http://localhost:3000/api/v1/products/getProducts"
+  //         );
+  //       } else {
+  //         data = await fetchDataFromAPI(
+  //           `http://localhost:3000/api/v1/products/getProducts?category=${category}`
+  //         );
+  //       }
+
+  //       if (data.status) {
+  //         setProducts(data.responseData.products);
+  //       }
+  //     } catch (error) {
+  //       console.log("Error in getting products from backend");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   //first time addding to the cart
 

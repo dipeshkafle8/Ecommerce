@@ -3,17 +3,27 @@ const { categoryModel } = require("../model/category");
 const getProducts = async (req, res) => {
   try {
     //if came through category
-    const { category } = req.query;
-    console.log(category);
-    let products;
-    if (!category) {
-      products = await ProductModel.find({});
-    } else {
-      /*we are getting category name but in products we have stored id of category
-       that's why in order to get categoryId */
-      let categoryDetails = await categoryModel.findOne({ name: category });
-      products = await ProductModel.find({ category: categoryDetails._id });
+    const { filterData, searchQuery } = req.query;
+    let query = {};
+
+    //Apply category filter
+    if (filterData && filterData.categories) {
+      query.category = { $in: filterData.categories };
     }
+    //Apply price range filter
+    if (filterData?.priceRange && filterData?.priceRange.length == 2) {
+      query.price = {
+        $gte: filterData.priceRange[0],
+        $lte: filterData.priceRange[1],
+      };
+    }
+
+    //Apply search query filter
+    if (searchQuery) {
+      query.name = { $regex: searchQuery, $options: "i" };
+    }
+
+    const products = await ProductModel.find(query);
 
     if (products) {
       res.status(200).json({
@@ -176,29 +186,6 @@ const getFamousProduct = async (req, res) => {
   }
 };
 
-//to apply filtering for products
-const applyFilters = async (req, res) => {
-  try {
-    const { categories, priceRange } = req.body;
-    let query = {};
-    if (categories && categories.length > 0) {
-      query.category = { $in: categories };
-    }
-    if (priceRange && priceRange.length == 2) {
-      query.price = { $gte: priceRange[0], $lte: priceRange[1] };
-    }
-    console.log(query);
-    const products = await ProductModel.find(query);
-
-    res.status(200).json({ status: 1, products });
-  } catch (err) {
-    console.log("Error in getting filtering");
-    res.status(500).json({
-      status: 0,
-      message: "Internal Server Error",
-    });
-  }
-};
 const getSimilarProducts = async (req, res) => {
   //productId of current product
   const { category, productId } = req.query;
@@ -250,7 +237,6 @@ module.exports = {
   deleteParticularProduct,
   applyPagination,
   getFamousProduct,
-  applyFilters,
   getSimilarProducts,
   searchProducts,
 };

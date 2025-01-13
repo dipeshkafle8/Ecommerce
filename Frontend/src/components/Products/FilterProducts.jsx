@@ -1,4 +1,5 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
@@ -15,8 +16,24 @@ const FilteredProducts = () => {
   const [priceRange, setPriceRange] = useState([0, 50000]);
   const [isButtonClicked, setIsButtonClicked] = useState(0); //to perform fetch when button in clicked
 
-  const handleCategoryChange = (name) => {
-    const category = name;
+  const { category } = useParams();
+  console.log("rendering");
+  //if came through category page include into the selectedCategories
+  useEffect(() => {
+    if (category) {
+      const categoryObj = categories.find((cat) => cat.name === category);
+      if (categoryObj && !selectedCategories.includes(categoryObj._id)) {
+        setSelectedCategories((prevSelectedCategories) => [
+          ...prevSelectedCategories,
+          categoryObj._id,
+        ]);
+      }
+    }
+  }, []);
+
+  const handleCategoryChange = (id) => {
+    const category = id;
+
     setSelectedCategories((prevSelectedCategories) => {
       //if already in selected remove add otherwise
       return prevSelectedCategories.includes(category)
@@ -42,6 +59,7 @@ const FilteredProducts = () => {
     const newMaxPrice = +event.target.value;
     setPriceRange([priceRange[0], newMaxPrice]);
   };
+  console.log(selectedCategories);
 
   return (
     <>

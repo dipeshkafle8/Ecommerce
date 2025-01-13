@@ -32,7 +32,7 @@ function Navbar() {
           <ul className=" hidden md:flex w-[60%] justify-evenly  items-center font-semibold text-[#605f5f] text-[1rem]">
             <li
               className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
-                location.pathname == "/"
+                location.pathname === "/"
                   ? "border-b-2 border-yellow-400 text-black"
                   : ""
               }`}
@@ -41,7 +41,7 @@ function Navbar() {
             </li>
             <li
               className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
-                location.pathname == "/products"
+                location.pathname === "/products"
                   ? "border-b-2 border-yellow-400 text-black"
                   : ""
               }`}
@@ -50,7 +50,7 @@ function Navbar() {
             </li>
             <li
               className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
-                location.pathname == "/category"
+                location.pathname === "/category"
                   ? "border-b-2 border-yellow-400 text-black"
                   : ""
               }`}
@@ -59,12 +59,12 @@ function Navbar() {
             </li>
             <li
               className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
-                location.pathname == "/about"
+                location.pathname === "/admin"
                   ? "border-b-2 border-yellow-400 text-black"
                   : ""
               }`}
             >
-              <Link to="/about">About</Link>
+              <Link to="/admin">Add Product</Link>
             </li>
           </ul>
         </div>
