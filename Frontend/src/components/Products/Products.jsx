@@ -33,12 +33,11 @@ function Products({ filterButton, filterData }) {
         if (response.data.status) {
           const newProducts = response.data.products;
           //there is no remaining products so disable load more
-          if (newProducts.length < 5) {
+          if (newProducts.length < 5 * page) {
             setHasMore(false);
           }
-
           //append new products to the product state array
-          setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+          setProducts(newProducts);
         } else {
           console.log(response.data.msg);
         }
@@ -77,7 +76,8 @@ function Products({ filterButton, filterData }) {
             );
           })}
         </div>
-        <div className="w-full flex justify-center m-4  mt-8 p-4">
+        {/* Load more functionality */}
+        <div className="w-full flex justify-center mt-16 p-4">
           {hasMore ? (
             <button
               onClick={() => setPage((prev) => prev + 1)}

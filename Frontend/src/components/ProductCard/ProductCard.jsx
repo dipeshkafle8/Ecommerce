@@ -1,9 +1,10 @@
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, ShoppingCart } from "lucide-react";
 import { useContext } from "react";
 import { CartContext } from "../Cart/CartContext";
 import { Link } from "react-router-dom";
 const ProductCard = ({ product, itemCount }) => {
   const { addToCart, updateCartItem, deleteFromCart } = useContext(CartContext);
+
   const handleAddToCart = (id, product) => {
     addToCart({ id, product });
   };
@@ -62,7 +63,7 @@ const ProductCard = ({ product, itemCount }) => {
               }}
               className="ml-2 mr-2 px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md"
             >
-              Add to Cart
+              Add to <ShoppingCart className="inline-block" />
             </button>
           )}
 

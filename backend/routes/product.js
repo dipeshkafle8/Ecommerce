@@ -4,7 +4,6 @@ const {
   addProducts,
   getParticularProducts,
   deleteParticularProduct,
-  applyPagination,
   getFamousProduct,
   getSimilarProducts,
   searchProducts,
@@ -17,7 +16,6 @@ productRouter.get("/get-famousProducts", getFamousProduct);
 productRouter.post("/addProduct", addProducts);
 productRouter.get("/getParticularProduct/:slug", getParticularProducts);
 productRouter.delete("/deleteProduct/:id", isAdmin, deleteParticularProduct);
-productRouter.get("/getProduct/pageCount/:pageNo", applyPagination);
 productRouter.get("/getSimilarProducts", getSimilarProducts);
 productRouter.get("/search", searchProducts);
 module.exports = {

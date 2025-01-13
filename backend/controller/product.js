@@ -4,9 +4,7 @@ const getProducts = async (req, res) => {
   try {
     //if came through category
     const { filterData, searchQuery, page } = req.query;
-    let skipProducts = (page - 1) * 5;
-    console.log(page);
-    console.log(skipProducts);
+    let limitProducts = page * 5;
     let query = {};
 
     //Apply category filter
@@ -26,7 +24,7 @@ const getProducts = async (req, res) => {
       query.name = { $regex: searchQuery, $options: "i" };
     }
 
-    const products = await ProductModel.find(query).skip(skipProducts).limit(5);
+    const products = await ProductModel.find(query).limit(limitProducts);
 
     if (products) {
       res.status(200).json({
@@ -141,35 +139,6 @@ const deleteParticularProduct = async (req, res) => {
   }
 };
 
-// lets apply pagination to the product
-const applyPagination = async (req, res) => {
-  try {
-    let { pageNo } = req.params;
-    pageNo = parseInt(pageNo);
-    const limit = 7;
-    const skip = (pageNo - 1) * limit;
-
-    const products = await ProductModel.find({}).skip(skip).limit(limit);
-    const productCount = await ProductModel.countDocuments();
-
-    const pageLimit = Math.ceil(productCount / limit);
-    res.status(202).json({
-      message: "Product found",
-      status: 1,
-      pageNo,
-      pageLimit,
-      products,
-    });
-  } catch (error) {
-    console.log(error);
-
-    res.status(404).json({
-      message: "Internal server issue",
-      status: 0,
-    });
-  }
-};
-
 //to get famous product which has higher order count
 const getFamousProduct = async (req, res) => {
   try {
@@ -238,7 +207,6 @@ module.exports = {
   getParticularProducts,
   getProducts,
   deleteParticularProduct,
-  applyPagination,
   getFamousProduct,
   getSimilarProducts,
   searchProducts,
