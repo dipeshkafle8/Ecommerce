@@ -4,12 +4,11 @@ const { userModel } = require("../model/UserModel");
 // this is the middelware
 const isAdmin = async (req, res, next) => {
   try {
-    const encryptedToken = req.headers.authorization.split(" ")[1];
-
+    const encryptedToken = req.headers["authorization"].split(" ")[1];
     const decryptedToken = jwt.verify(encryptedToken, process.env.jwtSecret);
 
     const user = await userModel.findById({ _id: decryptedToken.id });
-    if (user.role == "admin") {
+    if (user.role === "admin") {
       next();
     } else
       return res.status(404).json({
@@ -23,6 +22,7 @@ const isAdmin = async (req, res, next) => {
         status: 0,
       });
     }
+
     res.status(500).json({
       message: "Internal server error",
       status: 0,

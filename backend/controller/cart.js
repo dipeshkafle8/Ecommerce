@@ -6,6 +6,7 @@ const getCartItems = async (req, res) => {
 
   try {
     let cart = await Cart.findOne({ user: userId });
+
     if (!cart) {
       res.status(404).json({ status: 0, msg: "Cart not found" });
     }

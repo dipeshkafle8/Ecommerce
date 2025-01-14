@@ -7,7 +7,7 @@ import FrontPage from "./components/FrontPage/FrontPage";
 import FilteredProducts from "./components/Products/FilterProducts";
 import Login from "./components/Login/Login";
 import SignUp from "./components/Login/SignUp";
-import Admin from "./components/Admin/Admin";
+import AddPrduct from "./components/AddProduct/AddProduct";
 import Footer from "./components/Footer/Footer";
 import Category from "./components/Category/Category";
 import { CategoryProvider } from "./components/CategoryProvider";
@@ -15,6 +15,7 @@ import { AuthProvider } from "./components/Auth/AuthContext";
 import { CartProvider } from "./components/Cart/CartContext";
 import DisplayCartItem from "./components/Cart/DisplayCartItem";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
+import AddProduct from "./components/AddProduct/AddProduct";
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
                 <Route path="/products" element={<FilteredProducts />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<SignUp />} />
-                <Route path="/admin" element={<Admin />} />
+                <Route path="/add_product" element={<AddProduct />} />
                 <Route path="/category" element={<Category />} />
                 <Route path="/cart" element={<DisplayCartItem />} />
                 <Route

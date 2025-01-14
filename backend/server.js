@@ -27,6 +27,8 @@ app.use("/user", userRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/cart", cartRouter);
+
+app.post("/api/v1/checkIsAdmin");
 app.listen(port, (err) => {
   if (err) {
     console.log("Error while starting the server");

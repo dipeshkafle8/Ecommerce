@@ -1,14 +1,87 @@
 import { storage } from "../Firebase/Config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { useRef, useContext } from "react";
+import { useRef, useContext, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import sendDataToTheBackEnd from "./sendDataToBackEnd";
 import Swal from "sweetalert2";
 import { CategoryContext } from "../CategoryProvider";
-function Admin() {
-  //custom hook for fetching categories from backend
+import { UserContext } from "../Auth/AuthContext";
+import axios from "axios";
+
+function AddProduct() {
   const { categories, isCategoryLoading } = useContext(CategoryContext);
+  const [isAdmin, setIsAdmin] = useState(false);
   const formRef = useRef(null);
+  const { user } = useContext(UserContext);
+
+  if (!user) {
+    return (
+      <div className="min-h-[30vh] mt-20 flex justify-center items-center text-4xl font-semibold text-[#5e1717]">
+        Log In before Adding Product...
+      </div>
+    );
+  }
+
+  useEffect(() => {
+    if (user) {
+      //to check if the logged in user is admin or not
+      const checkIsAdmin = async () => {
+        let token = localStorage.getItem("token");
+        token = JSON.parse(token);
+
+        //without {} backend is getting undefined while accessing authorization
+        if (token) {
+          let response = await axios.post(
+            "http://localhost:3000/user/isAdmin",
+            {},
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.data.status === 1) {
+            setIsAdmin(true);
+          } else {
+            console.log(response.data.msg);
+          }
+        } else {
+          console.log("Token not provided");
+        }
+      };
+
+      checkIsAdmin();
+    }
+  }, []);
+
+  const sendDataToTheBackEnd = async (data) => {
+    console.log(data);
+    let response = await axios.post(
+      "http://localhost:3000/api/v1/products/addProduct",
+      {
+        data,
+      }
+    );
+
+    console.log(response.data);
+
+    if (response.data.status) {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Product Added successfully",
+      });
+
+      //after successfully sending data to backend reset form input fields
+      formRef.current.reset();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Failed to upload product",
+      });
+    }
+  };
 
   async function handleInputOnSubmit(e) {
     e.preventDefault();
@@ -24,6 +97,11 @@ function Admin() {
 
         imageArr.push(imageUrl);
       } catch (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Error storing image",
+        });
         console.log("Error in uploading Image" + err);
       }
     }
@@ -38,26 +116,17 @@ function Admin() {
         images: imageArr,
         description: formData.get("description") ?? "",
       };
-      let res = await sendDataToTheBackEnd(obj);
-      if (res.status) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Product Added successfully",
-        });
-        formRef.current.reset();
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Failed",
-          text: "Failed to upload product",
-        });
-      }
+      sendDataToTheBackEnd(obj);
     } catch (err) {
       console.log("Error in sending details to backend", err);
     }
   }
 
+  if (!isAdmin) {
+    return (
+      <div className="mt-16">You are not allowed to access this route...</div>
+    );
+  }
   if (isCategoryLoading) {
     return <div className="mt-16">Loading....</div>;
   }
@@ -184,4 +253,4 @@ function Admin() {
     </>
   );
 }
-export default Admin;
+export default AddProduct;

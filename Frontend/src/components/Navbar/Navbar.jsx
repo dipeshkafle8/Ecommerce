@@ -59,12 +59,12 @@ function Navbar() {
             </li>
             <li
               className={`hover:text-black hover:border-b-2 hover:border-yellow-400 ${
-                location.pathname === "/admin"
+                location.pathname === "/add_product"
                   ? "border-b-2 border-yellow-400 text-black"
                   : ""
               }`}
             >
-              <Link to="/admin">Add Product</Link>
+              <Link to="/add_product">Add Product</Link>
             </li>
           </ul>
         </div>
