@@ -55,31 +55,41 @@ function AddProduct() {
   }, []);
 
   const sendDataToTheBackEnd = async (data) => {
-    console.log(data);
-    let response = await axios.post(
-      "http://localhost:3000/api/v1/products/addProduct",
-      {
-        data,
+    let token = localStorage.getItem("token");
+    token = JSON.parse(token);
+    if (token) {
+      let response = await axios.post(
+        "http://localhost:3000/api/v1/products/addProduct",
+        {
+          ...data,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data);
+
+      if (response.data.status) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Product Added successfully",
+        });
+
+        //after successfully sending data to backend reset form input fields
+        formRef.current.reset();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Failed to upload product",
+        });
       }
-    );
-
-    console.log(response.data);
-
-    if (response.data.status) {
-      Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Product Added successfully",
-      });
-
-      //after successfully sending data to backend reset form input fields
-      formRef.current.reset();
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: "Failed to upload product",
-      });
+      console.log("Token is not provided");
     }
   };
 

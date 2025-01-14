@@ -79,9 +79,8 @@ const addProducts = async (req, res) => {
   try {
     const productData = req.body;
     const { category } = req.body;
-    const { images } = req.body;
+    //from frontend we are getting category_name that's why first finding category
     const isCategory = await categoryModel.findOne({ name: category });
-
     if (isCategory) {
       const productSave = await new ProductModel({
         ...productData,
