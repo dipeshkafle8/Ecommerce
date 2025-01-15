@@ -22,6 +22,10 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/check/h1", (req, res) => {
+  res.status(200).json({ msg: "Recieveing data" });
+});
+
 app.use("/user", userRouter);
 
 app.use("/api/v1/category", categoryRouter);
