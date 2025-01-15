@@ -11,7 +11,7 @@ function FrontPage() {
             alt="background image"
             className="w-[94rem] h-[34rem] m-auto"
           />
-          <div className=" absolute flex flex-col justify-center items-center md:w-[94rem] bg-slate-950 inset-0 m-auto bg-opacity-50 hover:bg-opacity-60 text-white">
+          <div className="absolute flex flex-col justify-center items-center md:w-[94rem] bg-slate-950 inset-0 m-auto bg-opacity-50 hover:bg-opacity-60 text-white">
             <span className="text-7xl font-bold mb-4">Welcome to ShopNow</span>
             <p className="text-xl font-semibold">
               Your one-stop shop for all your needs.

@@ -2,33 +2,57 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../Auth/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
+import { toast, ToastContainer } from "react-toastify";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isloading, setIsloading] = useState(false);
   const { user, setUser } = useContext(UserContext);
-
+  const Navigate = useNavigate();
   async function sendUserDetailsToBackEnd(user) {
     setIsloading(true);
     try {
       let res = await axios.post("http://localhost:3000/user/login", user);
-
       if (res.data.status) {
         let obj = {
           username: res.data.user.name,
           email: res.data.user.email,
         };
 
+        //after login set values on localStorage
         localStorage.setItem("token", JSON.stringify(res.data.token));
         localStorage.setItem("User", JSON.stringify(obj));
 
+        //setUser context to returnted user;
         setUser(res.data.user);
+
+        //display successfull notification
+        toast.success("Login successful!", {
+          position: "top-center",
+          autoClose: 1000,
+        });
+
+        //after displaying the message then navigate to the home
+        setTimeout(() => {
+          Navigate("/");
+        }, 1500);
       } else {
+        toast.error("Error in Login", {
+          postion: "top-right",
+          autoClose: 3000,
+        });
+
         console.log("Error in logging user");
       }
     } catch (err) {
+      toast.error("Error in Login", {
+        postion: "top-right",
+        autoClose: 3000,
+      });
+
       console.log("Error in logging user");
     } finally {
       setIsloading(false);
@@ -96,9 +120,13 @@ function Login() {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+              className="bg-blue-500 text-white py-2 px-12 rounded hover:bg-blue-600"
             >
-              Login
+              {isloading ? (
+                <ClipLoader className="inline-block" size={20} color="white" />
+              ) : (
+                "Login"
+              )}
             </button>
           </div>
           <div className="mt-4 text-center">

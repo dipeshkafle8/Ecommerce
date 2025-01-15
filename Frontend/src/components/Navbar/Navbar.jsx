@@ -6,6 +6,7 @@ import Profile from "./Profile";
 import SearchBar from "../SearchBar/SearchBar";
 import { UserContext } from "../Auth/AuthContext";
 import { CartContext } from "../Cart/CartContext";
+import { ToastContainer } from "react-toastify";
 
 function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -77,11 +78,11 @@ function Navbar() {
             <li>
               <Link
                 to="/cart"
-                className="hover:bg-[rgba(61,61,61,0.1)] bg-transparent  w-8 h-8 flex items-center justify-center"
+                className="relative hover:bg-[rgba(61,61,61,0.1)] bg-transparent  w-8 h-8 flex items-center justify-center"
               >
                 <ShoppingCart />
                 {totalItems > 0 && (
-                  <span className="inline-block relative w-4 bottom-[0.5rem]  bg-green-300 text-black rounded-full text-xs px-[0.1rem] text-center">
+                  <span className="inline-block absolute w-4 bottom-[1.29rem] left-4  bg-green-300 text-black rounded-full text-xs px-[0.1rem] text-center">
                     {totalItems}
                   </span>
                 )}

@@ -8,8 +8,9 @@ const getCartItems = async (req, res) => {
     let cart = await Cart.findOne({ user: userId });
 
     if (!cart) {
-      res.status(404).json({ status: 0, msg: "Cart not found" });
+      return res.status(404).json({ status: 0, msg: "Cart not found" });
     }
+
     res.status(200).json({
       status: 1,
       msg: "Cart fetched Sucessfully",

@@ -13,7 +13,6 @@ const handelUserLogin = async (req, res) => {
   try {
     const validateUserData = userLoginSchema.parse(req.body);
     const { email, password } = validateUserData;
-    console.log(email, password);
 
     const isExistingUser = await userModel.findOne({ email });
     if (!isExistingUser) {

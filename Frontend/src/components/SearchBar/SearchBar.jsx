@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
@@ -48,6 +49,7 @@ const SearchBar = () => {
     return () => clearTimeout(debounceFetch);
   }, [query, fetchSuggestions]);
 
+  //while navigating to the products
   const handleSearch = (to_Search) => {
     Navigate(`/products?search=${to_Search}`);
   };
@@ -87,8 +89,8 @@ const SearchBar = () => {
           <Search className="h-4 w-4 text-white" />
         </Button>
         {isLoading ? (
-          <div className="absolute right-[1.5rem] top-12 bg-white w-full p-2 border-2 border-[rgba(168,167,167,0.1)] rounded-md">
-            Loading
+          <div className="absolute right-[1.5rem] top-12 bg-white w-full p-2 border-2 border-[rgba(168,167,167,0.1)] rounded-md text-center">
+            <ClipLoader size={15} />
           </div>
         ) : null}
         {!isLoading && suggestions.length > 0 && isFocused ? (

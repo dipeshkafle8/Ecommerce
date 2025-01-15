@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 function Profile({ setUser }) {
   function handleLogOut() {
     setUser(null);
     localStorage.removeItem("token");
     localStorage.removeItem("User");
+    toast.success("User logged out");
   }
   return (
     <>
@@ -19,6 +21,7 @@ function Profile({ setUser }) {
             <button onClick={handleLogOut}>Log out</button>
           </li>
         </ul>
+        <ToastContainer />
       </div>
     </>
   );
