@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_SECRET,
+  apiKey: import.meta.env.REACT_APP_FIREBASE_SECRET,
   authDomain: "ecommerce-d3b60.firebaseapp.com",
   projectId: "ecommerce-d3b60",
   storageBucket: "ecommerce-d3b60.appspot.com",
