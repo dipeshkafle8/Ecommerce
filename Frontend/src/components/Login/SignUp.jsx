@@ -8,7 +8,10 @@ function SignUp() {
 
   async function sendUserDetailsToBackEnd(user) {
     try {
-      let res = await axios.post("http://localhost:3000/user/register", user);
+      let res = await axios.post(
+        "https://ecommerce-xw87.onrender.com/user/register",
+        user
+      );
       console.log(res.data);
     } catch (err) {
       console.log("Error in sending request");

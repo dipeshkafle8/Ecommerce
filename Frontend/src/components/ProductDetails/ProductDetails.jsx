@@ -17,7 +17,7 @@ const ProductDetails = () => {
     const fetchProduct = async () => {
       try {
         let response = await axios.get(
-          `http://localhost:3000/api/v1/products/getParticularProduct/${slug}`
+          `https://ecommerce-xw87.onrender.com/api/v1/products/getParticularProduct/${slug}`
         );
 
         if (response.data.status === 1) {

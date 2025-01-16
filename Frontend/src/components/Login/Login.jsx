@@ -15,7 +15,10 @@ function Login() {
   async function sendUserDetailsToBackEnd(user) {
     setIsloading(true);
     try {
-      let res = await axios.post("http://localhost:3000/user/login", user);
+      let res = await axios.post(
+        "https://ecommerce-xw87.onrender.com/user/login",
+        user
+      );
       if (res.data.status) {
         let obj = {
           username: res.data.user.name,

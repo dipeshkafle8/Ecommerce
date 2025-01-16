@@ -11,7 +11,7 @@ const CategoryProvider = ({ children }) => {
     const fetchCategories = async () => {
       try {
         const result = await fetchDataFromAPI(
-          "http://localhost:3000/api/v1/category/getCategory"
+          "https://ecommerce-xw87.onrender.com/api/v1/category/getCategory"
         );
         if (result.status) {
           setCategories(result.responseData.category);

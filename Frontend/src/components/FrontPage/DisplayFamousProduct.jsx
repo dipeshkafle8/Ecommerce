@@ -11,7 +11,7 @@ function DisplayFamousProduct() {
     let data = async () => {
       try {
         let result = await fetchDataFromAPI(
-          "http://localhost:3000/api/v1/products/get-famousProducts"
+          "https://ecommerce-xw87.onrender.com/api/v1/products/get-famousProducts"
         );
 
         if (result.status) {

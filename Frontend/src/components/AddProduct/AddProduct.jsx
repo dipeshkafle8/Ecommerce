@@ -31,7 +31,7 @@ function AddProduct() {
         //without {} backend is getting undefined while accessing authorization
         if (token) {
           let response = await axios.post(
-            "http://localhost:3000/user/isAdmin",
+            "https://ecommerce-xw87.onrender.com/user/isAdmin",
             {},
             {
               headers: {
@@ -59,7 +59,7 @@ function AddProduct() {
     token = JSON.parse(token);
     if (token) {
       let response = await axios.post(
-        "http://localhost:3000/api/v1/products/addProduct",
+        "https://ecommerce-xw87.onrender.com/api/v1/products/addProduct",
         {
           ...data,
         },

@@ -20,7 +20,7 @@ const SearchBar = () => {
     setIsLoading(true);
     try {
       let response = await axios.get(
-        "http://localhost:3000/api/v1/products/search",
+        "https://ecommerce-xw87.onrender.com/api/v1/products/search",
         {
           params: { query },
         }

@@ -21,7 +21,7 @@ function Products({ filterButton, filterData }) {
     const fetchFilteredData = async () => {
       try {
         const response = await axios.get(
-          "https://ecomm-backend-shopnow.vercel.app/api/v1/products/getProducts",
+          "https://ecommerce-xw87.onrender.com/api/v1/products/getProducts",
           {
             params: {
               filterData: filterData,

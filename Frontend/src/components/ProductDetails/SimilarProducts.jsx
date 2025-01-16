@@ -13,7 +13,7 @@ const SimilarProducts = ({ category, productId }) => {
     const fetchData = async () => {
       try {
         let response = await axios.get(
-          "http://localhost:3000/api/v1/products/getSimilarProducts",
+          "https://ecommerce-xw87.onrender.com/api/v1/products/getSimilarProducts",
           {
             params: { category, productId },
           }

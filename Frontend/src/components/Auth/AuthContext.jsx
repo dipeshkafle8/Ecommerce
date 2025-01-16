@@ -13,14 +13,17 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       const verifyToken = async () => {
         try {
-          let res = await fetch("http://localhost:3000/user/checkUserSession", {
-            method: "POST",
-            headers: {
-              "Content-type": "application/json",
-              authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ email: loggedUser.email }),
-          });
+          let res = await fetch(
+            "https://ecommerce-xw87.onrender.com/user/checkUserSession",
+            {
+              method: "POST",
+              headers: {
+                "Content-type": "application/json",
+                authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ email: loggedUser.email }),
+            }
+          );
           res = await res.json();
 
           if (res.status) {

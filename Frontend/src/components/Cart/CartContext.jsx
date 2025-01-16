@@ -22,7 +22,7 @@ export const CartProvider = ({ children }) => {
           token = JSON.parse(token);
           if (token) {
             let response = await axios.post(
-              "http://localhost:3000/api/v1/cart/getCartItems",
+              "https://ecommerce-xw87.onrender.com/api/v1/cart/getCartItems",
               {
                 userId: user._id,
               },
@@ -63,7 +63,7 @@ export const CartProvider = ({ children }) => {
       if (token) {
         try {
           let response = await axios.post(
-            "http://localhost:3000/api/v1/cart/addToCart",
+            "https://ecommerce-xw87.onrender.com/api/v1/cart/addToCart",
             {
               userId: user._id,
               productId: id,
@@ -116,7 +116,7 @@ export const CartProvider = ({ children }) => {
       if (token) {
         try {
           let response = await axios.post(
-            "http://localhost:3000/api/v1/cart/deleteFromCart",
+            "https://ecommerce-xw87.onrender.com/api/v1/cart/deleteFromCart",
             {
               userId: user._id,
               productId: id,
@@ -160,7 +160,7 @@ export const CartProvider = ({ children }) => {
       if (token) {
         try {
           let response = await axios.post(
-            "http://localhost:3000/api/v1/cart/updateCartItem",
+            "https://ecommerce-xw87.onrender.com/api/v1/cart/updateCartItem",
             {
               userId: user._id,
               productId: id,
@@ -206,7 +206,7 @@ export const CartProvider = ({ children }) => {
       if (token) {
         try {
           let response = await axios.post(
-            "http://localhost:3000/api/v1/cart/clearCart",
+            "https://ecommerce-xw87.onrender.com/api/v1/cart/clearCart",
             { userId: user._id },
             {
               headers: {
