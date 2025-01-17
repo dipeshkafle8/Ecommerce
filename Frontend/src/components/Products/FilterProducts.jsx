@@ -8,16 +8,20 @@ import { Input } from "../ui/input";
 import axios from "axios";
 import { CategoryContext } from "../CategoryProvider";
 import Products from "./Products";
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { useMediaQuery } from "react-responsive";
+
 // eslint-disable-next-line react/prop-types
 const FilteredProducts = () => {
   const { categories } = useContext(CategoryContext);
-  const [isBarHidden, setIsBarHidden] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 50000]);
   const [isButtonClicked, setIsButtonClicked] = useState(0); //to perform fetch when button in clicked
 
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const [isCollapsed, setIsCollapsed] = useState(isMobile ? true : false);
   const { category } = useParams();
-  console.log("rendering");
+
   //if came through category page include into the selectedCategories
   useEffect(() => {
     if (category) {
@@ -63,71 +67,82 @@ const FilteredProducts = () => {
 
   return (
     <>
-      <div className="mt-24 flex flex-col md:flex-row">
-        {!isBarHidden ? (
-          <div className="p-4 ml-2  top-20 flex flex-col h-[7rem] w-[19rem] border-2 border-[rgba(108,108,108,0.4)] md:w-[28rem] md:h-[32rem] rounded-sm shadow-lg cursor-pointer">
-            <span className="text-center text-xl font-semibold">
-              <Filter className="w-8 inline" /> Filtering
-            </span>
-            {/* filter category */}
-            <div className="flex flex-col gap-y-2">
-              <h2 className="text-xl font-bold">Categories:</h2>
-              {categories.map((category) => (
-                <div key={category._id}>
-                  <Checkbox
-                    checked={selectedCategories.includes(category._id)}
-                    onCheckedChange={() => handleCategoryChange(category._id)}
-                    name={category._id}
+      <div
+        className={` mt-16 md:mt-24 flex flex-col gap-y-4 items-center md:items-start md:flex-row`}
+      >
+        <div
+          className={`flex flex-col md:flex-row ${isMobile ? "w-full" : null}`}
+        >
+          <Sidebar
+            collapsed={isCollapsed}
+            width="21rem"
+            collapsedWidth="0"
+            collapsedHeight="0"
+            className={`${isMobile && isCollapsed ? "h-0" : null}`}
+          >
+            <div className="p-4 ml-2 flex flex-col  border-2 border-[rgba(108,108,108,0.4)]  rounded-sm shadow-lg cursor-pointer">
+              <span className="text-center text-xl font-semibold">
+                <Filter className="w-8 inline" /> Filtering
+              </span>
+              {/* filter category */}
+              <div className="flex flex-col gap-y-2">
+                <h2 className="text-xl font-bold">Categories:</h2>
+                {categories.map((category) => (
+                  <div key={category._id}>
+                    <Checkbox
+                      checked={selectedCategories.includes(category._id)}
+                      onCheckedChange={() => handleCategoryChange(category._id)}
+                      name={category._id}
+                    />
+                    <label htmlFor={category.name}>
+                      {"  "}
+                      {category.name}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              {/* price filtering */}
+              <div>
+                <h2 className=" mt-2 text-xl font-bold">Select Price Range</h2>
+                <div className="flex m-4">
+                  <label htmlFor="min-price">Min:</label>
+                  <Input
+                    id="min"
+                    value={priceRange[0]}
+                    onChange={handleMinPriceChange}
                   />
-                  <label htmlFor={category.name}>{category.name}</label>
-                </div>
-              ))}
-            </div>
-            {/* price filtering */}
-            <div>
-              <h2 className=" mt-2 text-xl font-bold">Select Price Range</h2>
-              <div className="flex m-4">
-                <label htmlFor="min-price">Min:</label>
-                <Input
-                  id="min"
-                  value={priceRange[0]}
-                  onChange={handleMinPriceChange}
-                />
 
-                <label htmlFor="max-price">Max:</label>
-                <Input
-                  id="max"
-                  value={priceRange[1]}
-                  onChange={handleMaxPriceChange}
+                  <label htmlFor="max-price">Max:</label>
+                  <Input
+                    id="max"
+                    value={priceRange[1]}
+                    onChange={handleMaxPriceChange}
+                  />
+                </div>
+                <Slider
+                  value={priceRange}
+                  onValueChange={handlePriceChange}
+                  min={0}
+                  max={50000}
+                  step={100}
+                  range={true}
+                  className="horizontal-slider"
                 />
               </div>
-              <Slider
-                value={priceRange}
-                onValueChange={handlePriceChange}
-                min={0}
-                max={50000}
-                step={100}
-                range={true}
-                className="horizontal-slider"
-              />
+              <div className="text-center m-4">
+                <Button onClick={applyFilters}>Apply Filter </Button>
+              </div>
             </div>
-            <div className="text-center m-4">
-              <Button onClick={applyFilters}>Apply Filter </Button>
-            </div>
-          </div>
-        ) : null}
-        <button
-          onClick={() => setIsBarHidden(!isBarHidden)}
-          className={` top-20 h-8 inline px-4 border-2 border-[rgba(108,108,108,0.4)] hover:bg-blue-100 rounded-sm ${
-            isBarHidden ? "left-0" : "left-[20rem]"
-          }`}
-        >
-          {isBarHidden ? (
-            <ChevronsRight className="w-4" />
-          ) : (
-            <ChevronsLeft className="w-4" />
-          )}
-        </button>
+          </Sidebar>
+
+          <button
+            onClick={() => setIsCollapsed((prev) => !prev)}
+            className=" bg-[#a22077b3] text-white rounded-sm block text-center"
+          >
+            {isCollapsed ? <ChevronsRight /> : <ChevronsLeft />}
+          </button>
+        </div>
+
         <Products
           filterButton={isButtonClicked}
           filterData={{ categories: selectedCategories, priceRange }}

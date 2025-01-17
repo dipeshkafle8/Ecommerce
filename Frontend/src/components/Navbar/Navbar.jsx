@@ -23,7 +23,7 @@ function Navbar() {
     <>
       <nav className="left-0 top-0 w-[100%] fixed flex h-16 justify-between items-center border-2 shadow-md z-50 bg-white">
         <Ham />
-        <div className=" flex  w-[11rem] md:w-[50%] items-center justify-between">
+        <div className=" flex  w-[10rem] md:w-[50%] items-center justify-between">
           <div>
             <Link to="/" className="text-2xl font-bold ml-8">
               <span className="text-3xl text-[#f7095c94]">S</span>hop

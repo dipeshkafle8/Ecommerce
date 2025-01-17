@@ -5,13 +5,15 @@ import { Button } from "../ui/button";
 import Swal from "sweetalert2";
 import { CategoryContext } from "../CategoryProvider";
 import { UserContext } from "../Auth/AuthContext";
+import useIsAdmin from "../hooks/useIsAdmin";
 import axios from "axios";
 
 function AddProduct() {
   const { categories, isCategoryLoading } = useContext(CategoryContext);
-  const [isAdmin, setIsAdmin] = useState(false);
   const formRef = useRef(null);
   const { user } = useContext(UserContext);
+
+  const isAdmin = useIsAdmin(user);
 
   if (!user) {
     return (
@@ -20,39 +22,6 @@ function AddProduct() {
       </div>
     );
   }
-
-  useEffect(() => {
-    if (user) {
-      //to check if the logged in user is admin or not
-      const checkIsAdmin = async () => {
-        let token = localStorage.getItem("token");
-        token = JSON.parse(token);
-
-        //without {} backend is getting undefined while accessing authorization
-        if (token) {
-          let response = await axios.post(
-            "https://ecommerce-xw87.onrender.com/user/isAdmin",
-            {},
-            {
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
-          if (response.data.status === 1) {
-            setIsAdmin(true);
-          } else {
-            console.log(response.data.msg);
-          }
-        } else {
-          console.log("Token not provided");
-        }
-      };
-
-      checkIsAdmin();
-    }
-  }, []);
 
   const sendDataToTheBackEnd = async (data) => {
     let token = localStorage.getItem("token");

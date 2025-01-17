@@ -57,8 +57,8 @@ function Products({ filterButton, filterData }) {
 
   return (
     <>
-      <div className="ml-8 w-full flex  flex-col">
-        <div className="flex w-full flex-1 flex-wrap gap-x-4 gap-y-4 justify-evenly">
+      <div className="w-full flex flex-col">
+        <div className="flex w-full flex-wrap gap-x-4 gap-y-4 justify-evenly">
           {products.map((product) => {
             //if current product is present in cart or not
             const cartItem = cart.find(

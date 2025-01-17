@@ -35,13 +35,13 @@ function Login() {
         //display successfull notification
         toast.success("Login successful!", {
           position: "top-center",
-          autoClose: 1000,
+          autoClose: 500,
         });
 
         //after displaying the message then navigate to the home
         setTimeout(() => {
           Navigate("/");
-        }, 1500);
+        }, 500);
       } else {
         toast.error("Error in Login", {
           postion: "top-right",

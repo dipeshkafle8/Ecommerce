@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { ScaleLoader } from "react-spinners";
 export const UserContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -47,7 +48,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
   if (isLoading) {
-    return <div>Loading.....</div>;
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center bg-gray-100">
+        <ScaleLoader color="#3498db" size={15} />
+        <p className="mt-4 ">Loading, please wait...</p>
+      </div>
+    );
   }
   return (
     <UserContext.Provider value={{ user, setUser }}>
