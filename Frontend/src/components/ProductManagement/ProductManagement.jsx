@@ -103,7 +103,9 @@ const ProductManagement = () => {
               );
             })
           : "Products not found"}
-        {showEdit ? <EditProduct product={selectedProduct} /> : null}
+        {showEdit ? (
+          <EditProduct product={selectedProduct} setShowEdit={setShowEdit} />
+        ) : null}
       </div>
     </>
   );

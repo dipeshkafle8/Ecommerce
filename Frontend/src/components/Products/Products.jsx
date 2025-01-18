@@ -30,8 +30,10 @@ function Products({ filterButton, filterData }) {
             },
           }
         );
+
         if (response.data.status) {
           const newProducts = response.data.products;
+          console.log(newProducts);
           //there is no remaining products so disable load more
           if (newProducts.length < 5 * page) {
             setHasMore(false);

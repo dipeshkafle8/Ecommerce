@@ -15,8 +15,6 @@ const AddProduct = ({ edit = false, editProduct }) => {
   const { user } = useContext(UserContext);
   const isAdmin = useIsAdmin(user);
 
-  console.log(editProduct.category.name);
-  console.log(editProduct);
   if (!user) {
     return (
       <div className="min-h-[30vh] mt-20 flex justify-center items-center text-4xl font-semibold text-[#5e1717]">
@@ -85,6 +83,9 @@ const AddProduct = ({ edit = false, editProduct }) => {
         });
         console.log("Error in uploading Image" + err);
       }
+    } else {
+      // if in edit user doesn't want to upload picture
+      imageUrl = edit ? editProduct?.images[0] : null;
     }
     try {
       let formData = new FormData(e.target);
@@ -113,14 +114,22 @@ const AddProduct = ({ edit = false, editProduct }) => {
   }
   return (
     <>
-      <div className="min-h-screen flex flex-col justify-center items-center mt-20 mb-8">
+      <div
+        className={`min-h-screen flex flex-col justify-center items-center ${
+          edit ? "" : "mt-20"
+        } mb-8`}
+      >
         <div>
-          <h1 className="text-4xl font-bold mt-4">
+          <h1 className={`text-4xl font-bold ${edit ? "" : "mt-4"}`}>
             {edit ? "Edit Product" : "Product Details"}
           </h1>
         </div>
         <form ref={formRef} onSubmit={handleInputOnSubmit}>
-          <div className="flex flex-col  p-12 w-[40rem] shadow-xl border-2 border-[rgba(141,140,140,0.4)] rounded-sm">
+          <div
+            className={`flex flex-col  p-12 w-[40rem]  ${
+              edit ? "" : "shadow-xl border-2 border-[rgba(141,140,140,0.4)]"
+            } rounded-sm`}
+          >
             <div className="mb-4">
               <label
                 htmlFor="product-name"
@@ -133,7 +142,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
                 type="text"
                 id="product-name"
                 name="name"
-                value={edit ? editProduct.name : null}
+                defaultValue={edit ? editProduct?.name : ""}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               />
@@ -146,7 +155,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
                 type="number"
                 id="price"
                 name="price"
-                value={edit ? editProduct.price : null}
+                defaultValue={edit ? editProduct?.price : ""}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               />
@@ -161,7 +170,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
               <select
                 id="category"
                 name="category"
-                value={edit ? editProduct.category.name : null}
+                defaultValue={edit ? editProduct?.category.name : ""}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               >
@@ -182,7 +191,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
                 type="text"
                 id="brand"
                 name="brand"
-                value={edit ? editProduct.brand : null}
+                defaultValue={edit ? editProduct?.brand : ""}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               />
@@ -198,7 +207,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
                 type="number"
                 id="quantity"
                 name="quantity"
-                value={edit ? editProduct.quantity : null}
+                defaultValue={edit ? editProduct?.quantity : ""}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               />
@@ -213,7 +222,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
                 name="image"
                 accept="image/*"
                 className="border border-gray-300 p-2 rounded w-full"
-                required
+                required={edit === false}
               />
             </div>
             <div className="mb-2">
@@ -226,7 +235,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
               <textarea
                 id="description"
                 name="description"
-                value={edit ? editProduct.description : null}
+                defaultValue={edit ? editProduct.description : ""}
                 className="border border-gray-300 p-2 rounded w-full"
                 rows="4"
                 required
@@ -234,7 +243,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
             </div>
             <div className="flex justify-center">
               <Button type="submit" className="bg-blue-600 px-8 ">
-                Submit
+                {edit ? "Edit" : "Submit"}
               </Button>
             </div>
           </div>
