@@ -17,7 +17,7 @@ import DisplayCartItem from "./components/Cart/DisplayCartItem";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 import AddProduct from "./components/AddProduct/AddProduct";
 import { ToastContainer } from "react-toastify";
-
+import ProductManagement from "./components/ProductManagement/ProductManagement";
 function App() {
   return (
     <>
@@ -40,6 +40,10 @@ function App() {
                     element={<FilteredProducts />}
                   />
                   <Route path="product/:slug" element={<ProductDetails />} />
+                  <Route
+                    path="/admin-products"
+                    element={<ProductManagement />}
+                  />
                 </Routes>
                 <Footer />
                 <ToastContainer position="top-center" autoClose={3000} />

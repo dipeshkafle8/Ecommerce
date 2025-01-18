@@ -107,7 +107,9 @@ function Navbar() {
               </li>
             ) : null}
           </ul>
-          {isProfileOpen && user ? <Profile setUser={setUser} /> : null}
+          {isProfileOpen && user ? (
+            <Profile user={user} setUser={setUser} />
+          ) : null}
         </div>
       </nav>
     </>

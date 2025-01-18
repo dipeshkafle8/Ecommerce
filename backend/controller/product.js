@@ -24,7 +24,9 @@ const getProducts = async (req, res) => {
       query.name = { $regex: searchQuery, $options: "i" };
     }
 
-    const products = await ProductModel.find(query).limit(limitProducts);
+    const products = await ProductModel.find(query)
+      .limit(limitProducts)
+      .populate("category");
 
     if (products) {
       res.status(200).json({

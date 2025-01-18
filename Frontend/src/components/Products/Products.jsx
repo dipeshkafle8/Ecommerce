@@ -36,7 +36,7 @@ function Products({ filterButton, filterData }) {
           if (newProducts.length < 5 * page) {
             setHasMore(false);
           }
-          //append new products to the product state array
+          //update products
           setProducts(newProducts);
         } else {
           console.log(response.data.msg);

@@ -8,13 +8,15 @@ import { UserContext } from "../Auth/AuthContext";
 import useIsAdmin from "../hooks/useIsAdmin";
 import axios from "axios";
 
-function AddProduct() {
+//if came through edit insert the initial value of product into the form
+const AddProduct = ({ edit = false, editProduct }) => {
   const { categories, isCategoryLoading } = useContext(CategoryContext);
   const formRef = useRef(null);
   const { user } = useContext(UserContext);
-
   const isAdmin = useIsAdmin(user);
 
+  console.log(editProduct.category.name);
+  console.log(editProduct);
   if (!user) {
     return (
       <div className="min-h-[30vh] mt-20 flex justify-center items-center text-4xl font-semibold text-[#5e1717]">
@@ -113,7 +115,9 @@ function AddProduct() {
     <>
       <div className="min-h-screen flex flex-col justify-center items-center mt-20 mb-8">
         <div>
-          <h1 className="text-4xl font-bold mt-4">Product Details</h1>
+          <h1 className="text-4xl font-bold mt-4">
+            {edit ? "Edit Product" : "Product Details"}
+          </h1>
         </div>
         <form ref={formRef} onSubmit={handleInputOnSubmit}>
           <div className="flex flex-col  p-12 w-[40rem] shadow-xl border-2 border-[rgba(141,140,140,0.4)] rounded-sm">
@@ -124,10 +128,12 @@ function AddProduct() {
               >
                 Product Name:
               </label>
+
               <input
                 type="text"
                 id="product-name"
                 name="name"
+                value={edit ? editProduct.name : null}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               />
@@ -140,6 +146,7 @@ function AddProduct() {
                 type="number"
                 id="price"
                 name="price"
+                value={edit ? editProduct.price : null}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               />
@@ -154,6 +161,7 @@ function AddProduct() {
               <select
                 id="category"
                 name="category"
+                value={edit ? editProduct.category.name : null}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               >
@@ -174,6 +182,7 @@ function AddProduct() {
                 type="text"
                 id="brand"
                 name="brand"
+                value={edit ? editProduct.brand : null}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               />
@@ -189,6 +198,7 @@ function AddProduct() {
                 type="number"
                 id="quantity"
                 name="quantity"
+                value={edit ? editProduct.quantity : null}
                 className="border border-gray-300 p-2 rounded w-full"
                 required
               />
@@ -216,6 +226,7 @@ function AddProduct() {
               <textarea
                 id="description"
                 name="description"
+                value={edit ? editProduct.description : null}
                 className="border border-gray-300 p-2 rounded w-full"
                 rows="4"
                 required
@@ -231,5 +242,5 @@ function AddProduct() {
       </div>
     </>
   );
-}
+};
 export default AddProduct;
