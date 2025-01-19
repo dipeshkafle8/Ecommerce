@@ -1,5 +1,7 @@
 const { ProductModel } = require("../model/product");
 const { categoryModel } = require("../model/category");
+
+//to get products
 const getProducts = async (req, res) => {
   try {
     //if came through category
@@ -77,6 +79,7 @@ const getParticularProducts = async (req, res) => {
   }
 };
 
+//add new product
 const addProducts = async (req, res) => {
   try {
     const productData = req.body;
@@ -114,13 +117,47 @@ const addProducts = async (req, res) => {
     });
   }
 };
-
-// deleting based on id
+const editProduct = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const { updatedData } = req.body;
+    const { category } = updatedData;
+    //because in shchema we are storing as id but we are getting category name instead of id
+    const isCategory = await categoryModel.findOne({ name: category });
+    if (isCategory) {
+      //updating the name with id
+      updatedData.category = isCategory._id;
+      const updatedProduct = await ProductModel.findByIdAndUpdate(
+        id,
+        updatedData,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      if (updatedProduct) {
+        res
+          .status(200)
+          .json({ status: 1, msg: "Product updated Successfully" });
+      } else {
+        res.status(404).json({
+          status: 0,
+          msg: "Product not Found",
+        });
+      }
+    } else {
+      res.status(404).json({ status: 0, msg: "Category Not Found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ status: 0, msg: "Internal Server Error" });
+  }
+};
+// deleting product based on id
 const deleteParticularProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const deletedProduct = await ProductModel.deleteOne({ _id: id });
-    console.log(deletedProduct);
     if (deletedProduct.deletedCount > 0) {
       return res.status(201).json({
         message: "product deleted successfully",
@@ -159,6 +196,7 @@ const getFamousProduct = async (req, res) => {
   }
 };
 
+// to get the similar products
 const getSimilarProducts = async (req, res) => {
   //productId of current product
   const { category, productId } = req.query;
@@ -211,4 +249,5 @@ module.exports = {
   getFamousProduct,
   getSimilarProducts,
   searchProducts,
+  editProduct,
 };

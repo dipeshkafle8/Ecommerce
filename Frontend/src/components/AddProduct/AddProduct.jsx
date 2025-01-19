@@ -27,35 +27,60 @@ const AddProduct = ({ edit = false, editProduct }) => {
     let token = localStorage.getItem("token");
     token = JSON.parse(token);
     if (token) {
-      let response = await axios.post(
-        "https://ecommerce-xw87.onrender.com/api/v1/products/addProduct",
-        {
-          ...data,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
+      try {
+        let response;
+        //if came through edit then go to the edit endpoint
+        if (edit) {
+          response = await axios.post(
+            "http://localhost:3000/api/v1/products/editProduct",
+            {
+              id: editProduct._id,
+              updatedData: data,
+            },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        } else {
+          response = await axios.post(
+            "https://ecommerce-xw87.onrender.com/api/v1/products/addProduct",
+            {
+              ...data,
+            },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          console.log(response.data);
         }
-      );
 
-      console.log(response.data);
+        if (response.data.status) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: edit
+              ? "Product updated Successfully"
+              : "Product Added successfully",
+          });
 
-      if (response.data.status) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Product Added successfully",
-        });
-
-        //after successfully sending data to backend reset form input fields
-        formRef.current.reset();
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Failed",
-          text: "Failed to upload product",
-        });
+          //after successfully sending data to backend reset form input fields
+          formRef.current.reset();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Failed",
+            text: edit
+              ? "Error in updating product"
+              : "Failed to upload product",
+          });
+        }
+      } catch (err) {
+        console.log(err);
       }
     } else {
       console.log("Token is not provided");
@@ -64,7 +89,8 @@ const AddProduct = ({ edit = false, editProduct }) => {
 
   async function handleInputOnSubmit(e) {
     e.preventDefault();
-    let imageArr = [];
+    //if came through edit then insert previous images into imageArr
+    let imageArr = edit && editProduct.images ? [...editProduct.images] : [];
     let file = e.target.elements["image"].files[0] ?? "";
     let imageUrl;
     if (file != "") {
@@ -83,9 +109,6 @@ const AddProduct = ({ edit = false, editProduct }) => {
         });
         console.log("Error in uploading Image" + err);
       }
-    } else {
-      // if in edit user doesn't want to upload picture
-      imageUrl = edit ? editProduct?.images[0] : null;
     }
     try {
       let formData = new FormData(e.target);

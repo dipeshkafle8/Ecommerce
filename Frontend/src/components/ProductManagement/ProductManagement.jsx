@@ -56,6 +56,30 @@ const ProductManagement = () => {
       console.log("Product not provided");
     }
   };
+  const deleteProduct = async ({ id }) => {
+    let token = localStorage.getItem("token");
+    token = JSON.parse(token);
+    if (token) {
+      const response = await axios.delete(
+        `http://localhost:3000/api/v1/products/deleteProduct`,
+        {
+          data: { id },
+
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.status) {
+        console.log("Product deleted Successfully");
+        window.location.reload();
+      } else {
+        console.log("Unable to delete prduct");
+      }
+    } else {
+      console.log("Token not provided");
+    }
+  };
 
   // loading occurs while checking the user is admin or not backend
   if (isLoading) {
@@ -91,7 +115,9 @@ const ProductManagement = () => {
                     <span>Brand:{product.brand}</span>
                     <span>Price:{product.price}</span>
                     <div className=" flex flex-row-reverse border-2 w-full gap-x-4 ">
-                      <button>
+                      <button
+                        onClick={() => deleteProduct({ id: product._id })}
+                      >
                         <Trash2 />
                       </button>
                       <button onClick={() => handleOnEdit(product)}>
