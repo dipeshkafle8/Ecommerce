@@ -32,7 +32,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
         //if came through edit then go to the edit endpoint
         if (edit) {
           response = await axios.post(
-            "http://localhost:3000/api/v1/products/editProduct",
+            "https://ecommerce-xw87.onrender.com/editProduct",
             {
               id: editProduct._id,
               updatedData: data,

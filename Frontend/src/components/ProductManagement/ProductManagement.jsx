@@ -61,7 +61,7 @@ const ProductManagement = () => {
     token = JSON.parse(token);
     if (token) {
       const response = await axios.delete(
-        `http://localhost:3000/api/v1/products/deleteProduct`,
+        `https://ecommerce-xw87.onrender.com/api/v1/products/deleteProduct`,
         {
           data: { id },
 
