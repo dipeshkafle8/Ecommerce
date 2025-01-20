@@ -6,7 +6,6 @@ import Profile from "./Profile";
 import SearchBar from "../SearchBar/SearchBar";
 import { UserContext } from "../Auth/AuthContext";
 import { CartContext } from "../Cart/CartContext";
-import { ToastContainer } from "react-toastify";
 
 function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -22,7 +21,7 @@ function Navbar() {
   return (
     <>
       <nav className="left-0 top-0 w-[100%] fixed flex h-16 justify-between items-center border-2 shadow-md z-50 bg-white">
-        <Ham />
+        <Ham user={user} setUser={setUser} />
         <div className=" flex  w-[10rem] md:w-[50%] items-center justify-between">
           <div>
             <Link to="/" className="text-2xl font-bold ml-8">

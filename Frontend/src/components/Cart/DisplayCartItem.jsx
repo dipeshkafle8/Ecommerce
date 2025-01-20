@@ -1,22 +1,45 @@
 import CartItem from "./CartItem";
 import CartSummary from "./CartSummary";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
 import { ShoppingBag } from "lucide-react";
+
 const DisplayCartItem = () => {
   const { cart, updateCartItem, deleteFromCart, clearCart } =
     useContext(CartContext);
-  const handleOnIncrement = (id, itemsInCart) => {
+  //for managing loading state
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  //to handle loading between itemcount and delete button
+  const [isDeleteClicked, setIsDeleteClicked] = useState(false);
+
+  const handleOnIncrement = async (id, itemsInCart) => {
+    setIsLoading(true);
+    setSelectedProduct(id);
     let itemsCount = itemsInCart + 1;
-    updateCartItem({ id, itemsCount });
+    await updateCartItem({ id, itemsCount });
+    setIsLoading(false);
   };
-  const handleOnDecrement = (id, itemsInCart) => {
+  const handleOnDecrement = async (id, itemsInCart) => {
+    setIsLoading(true);
+    setSelectedProduct(id);
     let itemsCount = itemsInCart - 1;
     if (itemsCount === 0) {
-      deleteFromCart({ id });
+      await deleteFromCart({ id });
+      setIsLoading(false);
       return;
     }
-    updateCartItem({ id, itemsCount });
+    await updateCartItem({ id, itemsCount });
+    setIsLoading(false);
+  };
+
+  const handleOnDelete = async ({ id }) => {
+    setIsLoading(true);
+    setIsDeleteClicked(true);
+    setSelectedProduct(id);
+    await deleteFromCart({ id });
+    setIsLoading(false);
+    setIsDeleteClicked(false);
   };
 
   const total_products = cart.length;
@@ -51,7 +74,10 @@ const DisplayCartItem = () => {
                   itemsCount={item.itemsCount}
                   onIncrease={handleOnIncrement}
                   onDecrease={handleOnDecrement}
-                  onDelete={deleteFromCart}
+                  onDelete={handleOnDelete}
+                  isLoading={isLoading}
+                  selectedProduct={selectedProduct}
+                  isDeleteClicked={isDeleteClicked}
                 />
               ))}
             </div>

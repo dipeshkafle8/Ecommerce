@@ -1,26 +1,41 @@
 import { Plus, Minus, ShoppingCart } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../Cart/CartContext";
 import { Link } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
+
 const ProductCard = ({ product, itemCount }) => {
   const { addToCart, updateCartItem, deleteFromCart } = useContext(CartContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleAddToCart = (id, product) => {
-    addToCart({ id, product });
+  const handleAddToCart = async (id, product) => {
+    setIsLoading(true);
+    setSelectedProduct(id);
+    await addToCart({ id, product });
+    setIsLoading(false);
   };
-  const handleOnDecrement = (id, itemsInCart) => {
+  const handleOnDecrement = async (id, itemsInCart) => {
+    setIsLoading(true);
+    setSelectedProduct(id);
     let itemsCount = itemsInCart - 1;
     if (itemsCount === 0) {
-      deleteFromCart({ id });
+      await deleteFromCart({ id });
+      setIsLoading(false);
       return;
     }
-    updateCartItem({ id, itemsCount });
+    await updateCartItem({ id, itemsCount });
+    setIsLoading(false);
   };
 
-  const handleOnIncrement = (id, itemsInCart) => {
+  const handleOnIncrement = async (id, itemsInCart) => {
+    setIsLoading(true);
+    setSelectedProduct(id);
     let itemsCount = itemsInCart + 1;
-    updateCartItem({ id, itemsCount });
+    await updateCartItem({ id, itemsCount });
+    setIsLoading(false);
   };
+
   return (
     <>
       <div
@@ -47,7 +62,11 @@ const ProductCard = ({ product, itemCount }) => {
               >
                 <Minus className="w-[1.12rem] mr-2 text-[#5d5b5b] hover:text-black" />
               </button>
-              <span className="font-semibold">{` ${itemCount} `} </span>
+              {isLoading && selectedProduct === product._id ? (
+                <ClipLoader size={12} />
+              ) : (
+                <span className="font-semibold">{` ${itemCount} `} </span>
+              )}
               <button
                 onClick={(e) => {
                   handleOnIncrement(product._id, itemCount);
@@ -63,7 +82,13 @@ const ProductCard = ({ product, itemCount }) => {
               }}
               className="ml-2 mr-2 px-6 py-2 bg-[#2424ed] text-white hover:bg-[#20204a] rounded-md"
             >
-              Add to <ShoppingCart className="inline-block" />
+              {isLoading && selectedProduct === product._id ? (
+                <ClipLoader color="white" size={20} />
+              ) : (
+                <span>
+                  Add to <ShoppingCart className="inline-block" />
+                </span>
+              )}
             </button>
           )}
 

@@ -1,6 +1,15 @@
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
+import { useState } from "react";
+import { ClipLoader } from "react-spinners";
 const CartSummary = ({ subtotal, tax, total, onClearCart }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleOnClearCart = async () => {
+    setIsLoading(true);
+    await onClearCart();
+    setIsLoading(false);
+  };
   return (
     <>
       <div className="bg-gray-50 p-6 rounded-lg shadow-md">
@@ -23,8 +32,12 @@ const CartSummary = ({ subtotal, tax, total, onClearCart }) => {
           <Button variant="default" className="w-full">
             <ShoppingCart className="mr-2 h-4 w-4" /> Proceed to Checkout
           </Button>
-          <Button variant="outline" className="w-full" onClick={onClearCart}>
-            Clear Cart
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleOnClearCart}
+          >
+            {isLoading ? <ClipLoader size={30} /> : <span>Clear Cart</span>}
           </Button>
         </div>
       </div>

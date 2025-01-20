@@ -2,23 +2,42 @@ import { Eye, EyeOff, Lock, Mail, User, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
-
-  async function sendUserDetailsToBackEnd(user) {
+  const [isLoading, setIsLoading] = useState(false);
+  const sendUserDetailsToBackEnd = async (user) => {
     try {
+      setIsLoading(true);
       let res = await axios.post(
         "https://ecommerce-xw87.onrender.com/user/register",
         user
       );
-      console.log(res.data);
+      if (res.data.status == 1) {
+        toast.success("User Registered", {
+          position: "top-center",
+          autoClose: 500,
+        });
+      } else {
+        toast.error("Error in creating User", {
+          position: "top-center",
+          autoClose: 500,
+        });
+      }
     } catch (err) {
+      toast.error("Error in sending User Details", {
+        position: "top-center",
+        autoClose: 500,
+      });
       console.log("Error in sending request");
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
-  function handleFormData(e) {
+  const handleFormData = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     let obj = {
@@ -28,12 +47,13 @@ function SignUp() {
       password: formData.get("password") ?? "",
     };
 
-    sendUserDetailsToBackEnd(obj);
+    await sendUserDetailsToBackEnd(obj);
     e.target.reset();
-  }
+  };
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 mt-8">
+      <ToastContainer />{" "}
       <div className="bg-white p-8 rounded shadow-md w-full max-w-lg">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold">Create your Account</h1>
@@ -118,7 +138,11 @@ function SignUp() {
               type="submit"
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
             >
-              Sign Up
+              {isLoading ? (
+                <ClipLoader size={20} className="inline-block" color="white" />
+              ) : (
+                <span>Sign Up</span>
+              )}
             </button>
           </div>
           <div className="mt-4 text-center">

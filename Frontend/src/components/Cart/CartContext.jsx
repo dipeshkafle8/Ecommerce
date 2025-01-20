@@ -1,4 +1,10 @@
-import { createContext, useReducer, useContext, useEffect } from "react";
+import {
+  createContext,
+  useReducer,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import cartReducer from "./cartReducer";
 import { UserContext } from "../Auth/AuthContext";
 import axios from "axios";
@@ -14,6 +20,7 @@ const initialState = {
 export const CartProvider = ({ children }) => {
   const { user, setUser } = useContext(UserContext);
   const [state, dispatch] = useReducer(cartReducer, initialState);
+
   useEffect(() => {
     const fetchCartItems = async () => {
       if (user) {
@@ -234,7 +241,13 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ ...state, addToCart, deleteFromCart, updateCartItem, clearCart }}
+      value={{
+        ...state,
+        addToCart,
+        deleteFromCart,
+        updateCartItem,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>

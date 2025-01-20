@@ -5,7 +5,9 @@ import { UserContext } from "../Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,21 +32,21 @@ function Login() {
         localStorage.setItem("User", JSON.stringify(obj));
 
         //setUser context to returnted user;
-        setUser(res.data.user);
-
-        //display successfull notification
         toast.success("Login successful!", {
           position: "top-center",
           autoClose: 500,
         });
+        setUser(res.data.user);
+
+        //display successfull notification
 
         //after displaying the message then navigate to the home
         setTimeout(() => {
           Navigate("/");
-        }, 500);
+        }, 1000);
       } else {
         toast.error("Error in Login", {
-          postion: "top-right",
+          position: "top-right",
           autoClose: 3000,
         });
 
@@ -52,7 +54,7 @@ function Login() {
       }
     } catch (err) {
       toast.error("Error in Login", {
-        postion: "top-right",
+        position: "top-right",
         autoClose: 3000,
       });
 
@@ -136,9 +138,11 @@ function Login() {
             <Link to="/register" className="text-blue-500 hover:underline">
               Don't have an account? Register
             </Link>
+            {/* // <ToastContainer /> */}
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }

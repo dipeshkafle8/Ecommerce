@@ -68,7 +68,7 @@ const SearchBar = () => {
 
   return (
     <>
-      <div className="relative flex item-center">
+      <div className="relative flex item-center w-full">
         <input
           type="text"
           value={query}
@@ -110,6 +110,10 @@ const SearchBar = () => {
                 );
               })}
             </ul>
+          </div>
+        ) : !isLoading && isFocused ? (
+          <div className="absolute right-[1.5rem] top-[2.48rem] bg-white w-[90%] p-2 border-2 border-[rgba(168,167,167,0.1)] rounded-md">
+            Product not found...
           </div>
         ) : null}
       </div>

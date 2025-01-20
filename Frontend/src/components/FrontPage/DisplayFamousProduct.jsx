@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../Cart/CartContext";
 import ProductCard from "../ProductCard/ProductCard";
+import { ClipLoader } from "react-spinners";
 
 import fetchDataFromAPI from "../fetchDataFromAPI";
 function DisplayFamousProduct() {
@@ -26,7 +27,11 @@ function DisplayFamousProduct() {
     data();
   }, []);
   if (isLoading) {
-    return <div>Loading.....</div>;
+    return (
+      <div className="h-[100vh] w-full flex justify-center items-center">
+        Loading <ClipLoader className="inline-block" />
+      </div>
+    );
   }
 
   return (

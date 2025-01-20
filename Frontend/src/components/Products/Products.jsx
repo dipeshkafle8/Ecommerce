@@ -4,6 +4,7 @@ import axios from "axios";
 import { CartContext } from "../Cart/CartContext";
 import ProductCard from "../ProductCard/ProductCard";
 import { RefreshCw } from "lucide-react";
+import { BeatLoader } from "react-spinners";
 
 function Products({ filterButton, filterData }) {
   //if came through search bar get the query from there
@@ -20,6 +21,7 @@ function Products({ filterButton, filterData }) {
   useEffect(() => {
     const fetchFilteredData = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(
           "https://ecommerce-xw87.onrender.com/api/v1/products/getProducts",
           {
@@ -33,7 +35,7 @@ function Products({ filterButton, filterData }) {
 
         if (response.data.status) {
           const newProducts = response.data.products;
-          console.log(newProducts);
+
           //there is no remaining products so disable load more
           if (newProducts.length < 5 * page) {
             setHasMore(false);
@@ -53,9 +55,12 @@ function Products({ filterButton, filterData }) {
   }, [filterButton, searchQuery, page]);
 
   if (isLoading) {
-    return <div className="mt-28 text-center">Loading ...</div>;
+    return (
+      <div className="mt-28 text-center w-[100vw] h-[100vh]">
+        Loading... <BeatLoader color="brown" />
+      </div>
+    );
   }
-  console.log(products);
 
   return (
     <>
@@ -68,7 +73,7 @@ function Products({ filterButton, filterData }) {
             );
             //if present get how many items are there
             const itemCount = cartItem ? cartItem.itemsCount : 0;
-            console.log(hasMore);
+
             return (
               <ProductCard
                 key={product._id}

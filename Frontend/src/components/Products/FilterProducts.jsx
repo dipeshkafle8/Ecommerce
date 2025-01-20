@@ -1,6 +1,13 @@
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { ChevronsLeft, ChevronsRight, Filter } from "lucide-react";
+import {
+  ChevronsLeft,
+  ChevronsRight,
+  Filter,
+  ChevronsDown,
+  ChevronsUp,
+} from "lucide-react";
+
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Slider } from "../ui/slider";
@@ -63,15 +70,16 @@ const FilteredProducts = () => {
     const newMaxPrice = +event.target.value;
     setPriceRange([priceRange[0], newMaxPrice]);
   };
-  console.log(selectedCategories);
 
   return (
     <>
       <div
-        className={` mt-16 md:mt-24 flex flex-col gap-y-4 items-center md:items-start md:flex-row`}
+        className={` mt-16 md:mt-24 flex flex-col  gap-y-4  md:items-start md:flex-row`}
       >
         <div
-          className={`flex flex-col md:flex-row ${isMobile ? "w-full" : null}`}
+          className={`flex flex-col mt-4 items-center md:mt-0 md:items-start md:flex-row ${
+            isMobile ? "w-full" : null
+          }`}
         >
           <Sidebar
             collapsed={isCollapsed}
@@ -137,9 +145,19 @@ const FilteredProducts = () => {
 
           <button
             onClick={() => setIsCollapsed((prev) => !prev)}
-            className=" bg-[#a22077b3] text-white rounded-sm block text-center"
+            className=" w-[80%] bg-[#a22077b3] hover:bg-[#60284eb3] text-white rounded-sm block text-center md:py-1 md:px-4"
           >
-            {isCollapsed ? <ChevronsRight /> : <ChevronsLeft />}
+            {isMobile ? (
+              isCollapsed ? (
+                <ChevronsDown className="inline-block" />
+              ) : (
+                <ChevronsUp className="inline-block" />
+              )
+            ) : isCollapsed ? (
+              <ChevronsRight className="inline-block" />
+            ) : (
+              <ChevronsLeft className="inline-block" />
+            )}
           </button>
         </div>
 

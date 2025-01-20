@@ -13,7 +13,7 @@ const AddProduct = ({ edit = false, editProduct }) => {
   const { categories, isCategoryLoading } = useContext(CategoryContext);
   const formRef = useRef(null);
   const { user } = useContext(UserContext);
-  const isAdmin = useIsAdmin(user);
+  const { isAdmin } = useIsAdmin(user);
 
   if (!user) {
     return (

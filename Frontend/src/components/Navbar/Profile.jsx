@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import useIsAdmin from "../hooks/useIsAdmin";
 import { ClipLoader } from "react-spinners";
+import Logout from "../Login/Logout";
 
 const Profile = ({ user, setUser }) => {
   const { isAdmin, isLoading } = useIsAdmin(user);
@@ -9,10 +10,13 @@ const Profile = ({ user, setUser }) => {
   console.log(isLoading);
 
   const handleLogOut = () => {
-    setUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("User");
-    toast.success("User logged out");
+    toast.success("Logged out successfully!", {
+      position: "top-center",
+      autoClose: 500,
+      onClose: () => {
+        Logout({ setUser });
+      },
+    });
   };
   if (isLoading) {
     return (
@@ -24,6 +28,7 @@ const Profile = ({ user, setUser }) => {
   return (
     <>
       <div className="absolute bg-white z-50 right-2 top-16 w-56 rounded-sm p-4 flex flex-col  text-[#434141]">
+        <ToastContainer />
         <ul>
           <li className="hover:text-black">
             <Link to="/profile">Profile</Link>
@@ -40,7 +45,6 @@ const Profile = ({ user, setUser }) => {
             <button onClick={handleLogOut}>Log out</button>
           </li>
         </ul>
-        <ToastContainer />
       </div>
     </>
   );
