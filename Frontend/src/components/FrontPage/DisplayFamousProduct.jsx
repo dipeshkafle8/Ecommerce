@@ -29,7 +29,8 @@ function DisplayFamousProduct() {
   if (isLoading) {
     return (
       <div className="h-[100vh] w-full flex justify-center items-center">
-        Loading <ClipLoader className="inline-block" />
+        <span className="text-xl font-semibold mr-4"> Loading ...</span>
+        <ClipLoader size={20} />
       </div>
     );
   }

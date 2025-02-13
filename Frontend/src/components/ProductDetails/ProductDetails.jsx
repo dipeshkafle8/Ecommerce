@@ -26,6 +26,7 @@ const ProductDetails = () => {
           console.log(response.message);
         }
       } catch (err) {
+        console.log(err);
         console.log("Error in fetching data");
       } finally {
         setIsLoading(false);

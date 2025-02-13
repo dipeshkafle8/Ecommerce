@@ -16,6 +16,7 @@ import { CartProvider } from "./components/Cart/CartContext";
 import DisplayCartItem from "./components/Cart/DisplayCartItem";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
 import AddProduct from "./components/AddProduct/AddProduct";
+import UserProfile from "./components/UserProfile/UserProfile";
 
 import ProductManagement from "./components/ProductManagement/ProductManagement";
 function App() {
@@ -40,6 +41,7 @@ function App() {
                 />
                 <Route path="product/:slug" element={<ProductDetails />} />
                 <Route path="/admin-products" element={<ProductManagement />} />
+                <Route path="/profile" element={<UserProfile />} />
               </Routes>
               <Footer />
             </CategoryProvider>

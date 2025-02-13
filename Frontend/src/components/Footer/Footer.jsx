@@ -20,42 +20,34 @@ function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/about"
+                    to="/add_product"
                     className="text-sm hover:text-white transition-colors"
                   >
-                    About Us
+                    Add Product
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/contact"
+                    to="/category"
                     className="text-sm hover:text-white transition-colors"
                   >
-                    Contact
+                    Category
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/faq"
+                    to="/products"
                     className="text-sm hover:text-white transition-colors"
                   >
-                    FAQ
+                    Products
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/terms"
+                    to="/login"
                     className="text-sm hover:text-white transition-colors"
                   >
-                    Terms & Conditions
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/privacy"
-                    className="text-sm hover:text-white transition-colors"
-                  >
-                    Privacy Policy
+                    Login
                   </Link>
                 </li>
               </ul>
@@ -67,7 +59,7 @@ function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/category/electronics"
+                    to="/products/Electronics"
                     className="text-sm hover:text-white transition-colors"
                   >
                     Electronics
@@ -75,35 +67,59 @@ function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/category/clothing"
+                    to="/products/Fashion"
                     className="text-sm hover:text-white transition-colors"
                   >
-                    Clothing
+                    Fashion
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/category/home-garden"
+                    to="/products/Home and Furniture"
                     className="text-sm hover:text-white transition-colors"
                   >
-                    Home & Garden
+                    Home & Furniture
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/category/sports"
+                    to="/products/Groceries and Essentials"
                     className="text-sm hover:text-white transition-colors"
                   >
-                    Sports & Outdoors
+                    Groceries & Essentials
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/category/books"
+                    to="/products/Books and Stationary"
                     className="text-sm hover:text-white transition-colors"
                   >
-                    Books
+                    Books & Stationary
                   </Link>
+                  <li>
+                    <Link
+                      to="/products/Toys,Baby, and Kids"
+                      className="text-sm hover:text-white transition-colors"
+                    >
+                      Toys,Baby, and Kids
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/products/Beauty and Personal Care"
+                      className="text-sm hover:text-white transition-colors"
+                    >
+                      Beauty and Personal Care
+                    </Link>
+                    <li>
+                      <Link
+                        to="/products/Health and Wellness"
+                        className="text-sm hover:text-white transition-colors"
+                      >
+                        Health and Wellness
+                      </Link>
+                    </li>
+                  </li>
                 </li>
               </ul>
             </div>

@@ -18,6 +18,7 @@ function Navbar() {
   useEffect(() => {
     setIsProfileOpen(false);
   }, [location]);
+
   return (
     <>
       <nav className="left-0 top-0 w-[100%] fixed flex h-16 justify-between items-center border-2 shadow-md z-50 bg-white">

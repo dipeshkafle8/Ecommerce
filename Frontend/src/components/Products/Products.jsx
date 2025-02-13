@@ -19,6 +19,8 @@ function Products({ filterButton, filterData }) {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    //scroll the screen to the top whenever components mounts
+    window.scrollTo(0, 0);
     const fetchFilteredData = async () => {
       try {
         setIsLoading(true);
